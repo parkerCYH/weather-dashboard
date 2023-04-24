@@ -3,6 +3,7 @@ import CityPicker from "./CityPicker";
 import Image from "next/image";
 import weatherCodeToString from "@/lib/weatherCodeToString";
 import { MoonIcon, SunIcon } from "@heroicons/react/solid";
+import moment from "moment";
 
 type Props = {
   city: string;
@@ -12,7 +13,6 @@ type Props = {
 };
 
 function InformationPanel({ city, lat, long, results }: Props) {
-  console.log(results);
   return (
     <div className="bg-gradient-to-br from-[#bd5656] to-[#e47070] p-10  text-white">
       <div className="pb-5">
@@ -67,38 +67,30 @@ function InformationPanel({ city, lat, long, results }: Props) {
         </div>
       </div>
       <div className=" space-y-2 py-5">
-        <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
-          <SunIcon className="h-10 w-10 text-gray-400" />
-          <div className="flex-1 flex justify-between items-center">
-            <p className="font-extralight">Sunrise</p>
-            <p className="uppercase text-2xl">
-              {new Date(results.daily.sunrise?.[0]).toLocaleTimeString(
-                "zh-TW",
-                {
-                  hour: "numeric",
-                  minute: "numeric",
-                  hour12: true,
-                }
-              )}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
-          <MoonIcon className="h-10 w-10 text-gray-400" />
-          <div className="flex-1 flex justify-between items-center">
-            <p className="font-extralight">Sunset</p>
-            <p className="uppercase text-2xl">
-              {new Date(results.daily.sunset?.[0]).toLocaleTimeString("zh-TW", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              })}
-            </p>
-          </div>
-        </div>
+        <SunItem time={results.daily.sunrise?.[0]} />
+        <SunsetItem time={results.daily.sunset?.[0]} />
       </div>
     </div>
   );
 }
 
+const SunItem = ({ time }: { time: number }) => (
+  <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
+    <SunIcon className="h-10 w-10 text-gray-400" />
+    <div className="flex-1 flex justify-between items-center">
+      <p className="font-extralight">Sunrise</p>
+      <p className="uppercase text-2xl">{moment.unix(time).format("HH:mm")}</p>
+    </div>
+  </div>
+);
+
+const SunsetItem = ({ time }: { time: number }) => (
+  <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
+    <MoonIcon className="h-10 w-10 text-gray-400" />
+    <div className="flex-1 flex justify-between items-center">
+      <p className="font-extralight">Sunset</p>
+      <p className="uppercase text-2xl">{moment.unix(time).format("HH:mm")}</p>
+    </div>
+  </div>
+);
 export default InformationPanel;

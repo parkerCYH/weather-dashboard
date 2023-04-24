@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "stepzen": "cd stepzen && stepzen start --dashboard=local"
+    "dashboard": "cd stepzen && stepzen start --dashboard=local"
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",
@@ -22,6 +22,7 @@
     "eslint-config-next": "13.3.1",
     "graphql": "^16.6.0",
     "heroicons": "^2.0.17",
+    "moment": "^2.29.4",
     "next": "13.3.1",
     "postcss": "8.4.23",
     "react": "18.2.0",

@@ -85,7 +85,8 @@ const fetchWeatherQuery = gql`
     $hourly: String = "temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,precipitation,rain,showers,snowfall,snow_depth,windgusts_10m,uv_index,uv_index_clear_sky"
     $latitude: String!
     $longitude: String!
-    $timezone: String!
+    $timezone: String = "auto"
+    $timeformat: String = "unixtime"
   ) {
     myQuery(
       current_weather: $current_weather
@@ -94,6 +95,7 @@ const fetchWeatherQuery = gql`
       daily: $daily
       latitude: $latitude
       timezone: $timezone
+      timeformat: $timeformat
     ) {
       longitude
       latitude

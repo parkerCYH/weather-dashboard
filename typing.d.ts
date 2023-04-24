@@ -1,7 +1,7 @@
 interface CurrentWeather {
   is_day: number;
   temperature: number;
-  time: string;
+  time: number;
   weathercode: number;
   winddirection: number;
   windspeed: number;
@@ -9,11 +9,11 @@ interface CurrentWeather {
 interface Daily {
   apparent_temperature_max: [number];
   apparent_temperature_min: [number];
-  sunrise: [string];
-  sunset: [string];
+  sunrise: [number];
+  sunset: [number];
   temperature_2m_max: [number];
   temperature_2m_min: [number];
-  time: [string];
+  time: [number];
   uv_index_clear_sky_max: [number];
   uv_index_max: [number];
   weathercode: [number];
@@ -42,7 +42,7 @@ interface Hourly {
   snow_depth: [number];
   snowfall: [number];
   temperature_2m: [number];
-  time: [string];
+  time: [number];
   uv_index: [number];
   uv_index_clear_sky: [number];
 }
