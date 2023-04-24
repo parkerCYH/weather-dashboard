@@ -2,12 +2,15 @@
   "typescript.tsdk": "node_modules\\.pnpm\\typescript@5.0.4\\node_modules\\typescript\\lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "cSpell.words": [
+    "apikey",
     "dewpoint",
     "generationtime",
     "heroicons",
     "relativehumidity",
+    "STEPZEN",
     "weathercode",
     "winddirection",
+    "windgusts",
     "windspeed"
   ]
 }
