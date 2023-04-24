@@ -1,5 +1,8 @@
 import React from "react";
 import CityPicker from "./CityPicker";
+import Image from "next/image";
+import weatherCodeToString from "@/lib/weatherCodeToString";
+import { MoonIcon, SunIcon } from "@heroicons/react/solid";
 
 type Props = {
   city: string;
@@ -40,6 +43,58 @@ function InformationPanel({ city, lat, long, results }: Props) {
             hour12: false,
           })}
         </p>
+      </div>
+      <hr className="mt-10 mb-5" />
+      <div className=" flex justify-between items-center">
+        <div>
+          <Image
+            src={`https://www.weatherbit.io/static/img/icons/${
+              weatherCodeToString[results.current_weather.weathercode].icon
+            }.png`}
+            alt={weatherCodeToString[results.current_weather.weathercode].label}
+            width={75}
+            height={75}
+          />
+          <div className="flex justify-between items-center space-x-10">
+            <p className="text-6xl font-semibold">
+              {results.current_weather.temperature.toFixed(1)}°C
+            </p>
+            <p className=" text-right font-extralight text-lg">
+              {weatherCodeToString[results.current_weather.weathercode].label}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className=" space-y-2 py-5">
+        <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
+          <SunIcon className="h-10 w-10 text-gray-400" />
+          <div className="flex-1 flex justify-between items-center">
+            <p className="font-extralight">Sunrise</p>
+            <p className="uppercase text-2xl">
+              {new Date(results.daily.sunrise?.[0]).toLocaleTimeString(
+                "zh-TW",
+                {
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                }
+              )}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
+          <MoonIcon className="h-10 w-10 text-gray-400" />
+          <div className="flex-1 flex justify-between items-center">
+            <p className="font-extralight">Sunset</p>
+            <p className="uppercase text-2xl">
+              {new Date(results.daily.sunset?.[0]).toLocaleTimeString("zh-TW", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

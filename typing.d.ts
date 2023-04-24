@@ -11,6 +11,8 @@ interface Daily {
   temperature_2m_max: [number];
   temperature_2m_min: [number];
   time: [string];
+  sunrise: [string];
+  sunset: [string];
   uv_index_clear_sky_max: [number];
   uv_index_max: [number];
   weathercode: [number];
