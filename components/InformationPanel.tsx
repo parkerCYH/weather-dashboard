@@ -12,6 +12,7 @@ type Props = {
 };
 
 function InformationPanel({ city, lat, long, results }: Props) {
+  console.log(results);
   return (
     <div className="bg-gradient-to-br from-[#bd5656] to-[#e47070] p-10  text-white">
       <div className="pb-5">

@@ -111,16 +111,22 @@ const fetchWeatherQuery = gql`
         windspeed
       }
       daily {
+        weathercode
         temperature_2m_max
         temperature_2m_min
-        time
-        weathercode
+        sunrise
+        sunset
+        uv_index_max
+        uv_index_clear_sky_max
       }
       daily_units {
         temperature_2m_max
         temperature_2m_min
         time
         weathercode
+        sunrise
+        sunset
+        uv_index_max
       }
       hourly {
         apparent_temperature
