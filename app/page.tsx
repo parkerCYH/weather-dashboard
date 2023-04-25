@@ -11,7 +11,7 @@ export default function Home() {
           Weather AI
         </Text>
         <Subtitle className=" text-xl text-center">
-          power by nextjs13, openAI, tailwind CSS, tremor 2.0 +more!
+          power by nextJS, openAI, tailwind CSS, tremor 2.0 +more!
         </Subtitle>
         <Divider className="my-10" />
         <Card className=" bg-gradient-to-br from-[#bd5656] to-[#e47070]">

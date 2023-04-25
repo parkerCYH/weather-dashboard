@@ -2,8 +2,9 @@
 import { City, Country } from "country-state-city";
 import Select from "react-select";
 import { GlobeIcon } from "@heroicons/react/solid";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { isNil } from "ramda";
 
 type CountryOption = {
   value: {
@@ -50,6 +51,36 @@ function CityPicker() {
     );
   };
 
+  const cityOptions = useMemo(() => {
+    if (!selectedCountry) {
+      return [];
+    }
+
+    const cities = City.getCitiesOfCountry(selectedCountry.value.isoCode);
+    if (!cities) {
+      return [];
+    }
+
+    const filteredCities = cities.filter((city) => {
+      if (isNil(city.latitude) || isNil(city.longitude)) {
+        console.warn(`${city.name} has undefined latitude or longitude`);
+        return false;
+      }
+      return true;
+    });
+
+    return filteredCities.map((city) => ({
+      value: {
+        latitude: city.latitude!,
+        longitude: city.longitude!,
+        countryCode: city.countryCode,
+        name: city.name,
+        stateCode: city.stateCode,
+      },
+      label: city.name,
+    }));
+  }, [selectedCountry]);
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -74,18 +105,7 @@ function CityPicker() {
             className=" text-black"
             onChange={handleSelectedCity}
             value={selectedCity}
-            options={City.getCitiesOfCountry(
-              selectedCountry.value.isoCode
-            )?.map((state) => ({
-              value: {
-                latitude: state.latitude,
-                longitude: state.longitude,
-                countryCode: state.countryCode,
-                name: state.name,
-                stateCode: state.stateCode,
-              },
-              label: state.name,
-            }))}
+            options={cityOptions}
           />
         </div>
       )}
