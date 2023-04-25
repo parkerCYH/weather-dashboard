@@ -4,6 +4,7 @@ import Image from "next/image";
 import weatherCodeToString from "@/lib/weatherCodeToString";
 import { MoonIcon, SunIcon } from "@heroicons/react/solid";
 import moment from "moment";
+import Link from "next/link";
 
 type Props = {
   city: string;
@@ -16,7 +17,9 @@ function InformationPanel({ city, lat, long, results }: Props) {
   return (
     <div className="bg-gradient-to-br from-[#bd5656] to-[#e47070] p-10  text-white">
       <div className="pb-5">
-        <h1 className="text-6xl font-bold">{decodeURI(city)}</h1>
+        <h1 className="text-6xl font-bold">
+          <Link href="/">{decodeURI(city)}</Link>
+        </h1>
         <p className="text-xs text-gray-400">
           Long/Lat: {long}, {lat}
         </p>
