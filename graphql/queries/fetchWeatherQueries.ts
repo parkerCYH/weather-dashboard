@@ -138,6 +138,7 @@ const fetchWeatherQuery = gql`
         relativehumidity_2m
         temperature_2m
         time
+        rain
         uv_index
         uv_index_clear_sky
       }
@@ -149,6 +150,7 @@ const fetchWeatherQuery = gql`
         relativehumidity_2m
         temperature_2m
         time
+        rain
         uv_index
         uv_index_clear_sky
       }

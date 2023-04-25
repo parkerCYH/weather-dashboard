@@ -1,7 +1,10 @@
 import { getClient } from "@/apollo-client";
 import CalloutCard from "@/components/CalloutCard";
+import HumidityChart from "@/components/HumidityChart";
 import InformationPanel from "@/components/InformationPanel";
+import RainChart from "@/components/RainChart";
 import StatCard from "@/components/StatCard";
+import TempChart from "@/components/TempChart";
 import fetchWeatherQuery from "@/graphql/queries/fetchWeatherQueries";
 
 type Props = {
@@ -92,6 +95,12 @@ const CardBlock = ({ results }: { results: Root }) => {
 };
 
 const ChartBlock = ({ results }: { results: Root }) => {
-  return <div className="space-y-3">{/* tempChart */}</div>;
+  return (
+    <div className="space-y-3">
+      <TempChart results={results} />
+      <RainChart results={results} />
+      <HumidityChart results={results} />
+    </div>
+  );
 };
 export default WeatherPage;
