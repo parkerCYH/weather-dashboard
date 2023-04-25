@@ -139,6 +139,7 @@ const fetchWeatherQuery = gql`
         temperature_2m
         time
         rain
+        snowfall
         uv_index
         uv_index_clear_sky
       }
@@ -151,6 +152,7 @@ const fetchWeatherQuery = gql`
         temperature_2m
         time
         rain
+        snowfall
         uv_index
         uv_index_clear_sky
       }
