@@ -9,7 +9,7 @@ import fetchWeatherQuery from "@/graphql/queries/fetchWeatherQueries";
 import cleanData from "@/lib/cleanData";
 import getBasePath from "@/lib/getBasePath";
 
-export const revalidate = 60 * 24;
+export const revalidate = 60;
 
 type Props = {
   params: {
@@ -52,7 +52,7 @@ async function WeatherPage({ params: { city, lat, long } }: Props) {
             </p>
           </div>
           <div className="m-2 mb-10">
-            <CalloutCard message={content} />;
+            <CalloutCard message={content ?? "AI suggestion content"} />
           </div>
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 m-2">
             <StatCard
