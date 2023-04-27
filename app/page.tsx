@@ -2,7 +2,6 @@
 
 import CityPicker from "@/components/CityPicker";
 import { Card, Divider, Subtitle, Text } from "@tremor/react";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   return (

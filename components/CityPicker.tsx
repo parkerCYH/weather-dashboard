@@ -5,6 +5,7 @@ import { GlobeIcon } from "@heroicons/react/solid";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isNil } from "ramda";
+import { Button } from "@tremor/react";
 
 type CountryOption = {
   value: {
@@ -45,10 +46,6 @@ function CityPicker() {
   };
   const handleSelectedCity = (option: CityOption) => {
     setSelectedCity(option);
-
-    router.push(
-      `/location/${option?.value.name}/${option?.value.latitude}/${option?.value.longitude}`
-    );
   };
 
   const cityOptions = useMemo(() => {
@@ -107,6 +104,22 @@ function CityPicker() {
             value={selectedCity}
             options={cityOptions}
           />
+        </div>
+      )}
+      {selectedCity && (
+        <div className="pt-4">
+          <Button
+            className=" w-full space-y-4"
+            color="slate"
+            size="xs"
+            onClick={() => {
+              router.push(
+                `/location/${selectedCity?.value.name}/${selectedCity?.value.latitude}/${selectedCity?.value.longitude}`
+              );
+            }}
+          >
+            Go
+          </Button>
         </div>
       )}
     </div>

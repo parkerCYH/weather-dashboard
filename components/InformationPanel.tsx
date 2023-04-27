@@ -20,7 +20,7 @@ function InformationPanel({ city, lat, long, results }: Props) {
         <h1 className="text-6xl font-bold">
           <Link href="/">{decodeURI(city)}</Link>
         </h1>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-200">
           Long/Lat: {long}, {lat}
         </p>
       </div>
