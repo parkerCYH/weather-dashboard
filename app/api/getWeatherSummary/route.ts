@@ -30,12 +30,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(data.choices[0].message);
   } catch (error) {
-    if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
-    } else {
-      console.log(error.message);
-    }
+    console.log(error);
 
     return NextResponse.json([]);
   }
