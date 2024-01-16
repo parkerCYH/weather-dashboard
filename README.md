@@ -4,8 +4,6 @@
 
 [Demo](https://weather-dashboard-eustacecheng.vercel.app)
 
-#
-
 ### Step by step
 
 In your terminal, we create a new Next project:
