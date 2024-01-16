@@ -1,37 +1,48 @@
 # Weather DashBoard
 
-## Live site
+## [Demo](https://weather-dashboard-eustacecheng.vercel.app)
 
-[Demo](https://weather-dashboard-eustacecheng.vercel.app)
+### Steps to Use
 
-### Step by step
+1.  Clone the repository:
 
-In your terminal, we create a new Next project:
+    ```bash
+    git clone https://github.com/EustaceCheng/weather-dashboard.git
+    cd weather-dashboard
+    ```
 
-```bash
-git clone https://github.com/EustaceCheng/weather-dashboard.git
-cd weather-dashboard
-```
+2.  Install packages using pnpm:
 
-<br>
+    ```bash
+    pnpm i
+    ```
 
-Install package from your command line via pnpm.
+3.  Run NextJs server:
 
-```bash
-pnpm i
-```
+    ```bash
+    pnpm dev
+    ```
 
-<br>
+4.  In another terminal, run Stepzen server:
 
-Run NextJs server:
+    - Install Stepzen globally:
 
-```bash
-pnpm dev
-```
+      ```bash
+      pnpm add -g stepzen
+      ```
 
-<br>
-In another terminal, run Stepzen server:
+    - Run Stepzen Server
 
-```bash
-pnpm dashboard
-```
+      ```bash
+      pnpm dashboard
+      ```
+
+    - First-time use Stepzen, create an account and log in:
+
+      ```bash
+      pnpm dashboard
+      ? How would you like to continue? Log in via stepzen.com
+      ? What is your Admin Key? copy your admin key on stepzen.com
+      ```
+
+Now, open localhost:3000 to view the weather dashboard on your local browser.
