@@ -7,13 +7,12 @@ function Loading() {
         color="yellow"
       />
       <h1 className="text-6xl font-bold text-center mb-10 animate-pulse">
-        {" "}
         Loading City Weather Information
       </h1>
       <h2 className="text-xl font-bold text-center mb-10 animate-pulse">
         Hold on, we are crunching the numbers & generating an AI summary of the
         Weather!
-      </h2>{" "}
+      </h2>
     </div>
   );
 }

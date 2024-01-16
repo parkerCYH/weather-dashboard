@@ -4,28 +4,9 @@ import { Select } from "antd";
 import { GlobeIcon } from "@heroicons/react/solid";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { isEmpty, isNil } from "ramda";
+import { isEmpty, isNil, isNotNil } from "ramda";
 import { Button } from "@tremor/react";
 
-type CountryOption = {
-  value: {
-    latitude: string;
-    longitude: string;
-    isoCode: string;
-  };
-  label: string;
-} | null;
-
-type CityOption = {
-  value: {
-    latitude: string;
-    longitude: string;
-    countryCode: string;
-    name: string;
-    stateCode: string;
-  };
-  label: string;
-} | null;
 const options = Country.getAllCountries().map((country) => ({
   value: country.isoCode,
   label: country.name,
@@ -51,7 +32,7 @@ function CityPicker() {
 
     const cities = City.getCitiesOfCountry(selectedCountry);
 
-    if (!cities) {
+    if (isEmpty(cities) || isNil(cities)) {
       return [];
     }
 
@@ -68,6 +49,24 @@ function CityPicker() {
       label: city.name,
     }));
   }, [selectedCountry]);
+  const locationPath = useMemo(() => {
+    if (isNil(selectedCountry)) {
+      return "";
+    }
+    const cities = City.getCitiesOfCountry(selectedCountry);
+    if (isNil(selectedCity) && isNotNil(selectedCountry) && isNotNil(cities)) {
+      const countryInfo = Country.getCountryByCode(selectedCountry);
+      if (isNotNil(countryInfo)) {
+        const { name, latitude, longitude } = countryInfo;
+        return `${name}/${latitude}/${longitude}`;
+      }
+      return "";
+    }
+    if (isNotNil(selectedCity)) {
+      return selectedCity;
+    }
+    return "";
+  }, [selectedCity, selectedCountry]);
 
   return (
     <div className="space-y-4">
@@ -105,9 +104,9 @@ function CityPicker() {
           className=" w-full space-y-4"
           color="slate"
           size="xs"
-          disabled={isNil(selectedCity)}
+          disabled={isEmpty(locationPath)}
           onClick={() => {
-            router.push(`/location/${selectedCity}`);
+            router.push(`/location/${locationPath}`);
           }}
         >
           Go
