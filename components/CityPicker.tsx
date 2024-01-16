@@ -67,7 +67,10 @@ function CityPicker() {
     }
     return "";
   }, [selectedCity, selectedCountry]);
-
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string }
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -78,6 +81,8 @@ function CityPicker() {
         <Select
           className=" text-black w-full"
           options={options}
+          showSearch
+          filterOption={filterOption}
           placeholder="Click to Select"
           onChange={handleSelectedCountry}
           value={selectedCountry}
@@ -91,8 +96,10 @@ function CityPicker() {
           </div>
           <Select
             className=" text-black w-full"
+            showSearch
             placeholder="Click to Select"
             onChange={handleSelectedCity}
+            filterOption={filterOption}
             value={selectedCity}
             options={cityOptions}
           />
