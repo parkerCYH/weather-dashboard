@@ -1,11 +1,8 @@
-import { SunIcon } from "@heroicons/react/solid";
+import { Sun } from "lucide-react";
 function Loading() {
   return (
     <div className="bg-gradient-to-br from-[#bd5656] to-[#e47070]  min-h-screen flex flex-col items-center justify-center text-slate-500">
-      <SunIcon
-        className="h-24 w-24 animate-bounce text-yellow-500"
-        color="yellow"
-      />
+      <Sun className="h-24 w-24 animate-bounce text-yellow-500" />
       <h1 className="text-6xl font-bold text-center mb-10 animate-pulse">
         {" "}
         Loading City Weather Information

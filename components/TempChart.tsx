@@ -1,6 +1,22 @@
 "use client";
 
-import { AreaChart, Card, Title } from "@tremor/react";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import moment from "moment";
 
 type Props = { results: Root };
@@ -18,20 +34,60 @@ function TempChart({ results }: Props) {
     };
   });
 
-  const dataFormatter = (number: number) => `${number} °C`;
   return (
     <Card>
-      <Title>Temperature & UV Index</Title>
-      <AreaChart
-        className="mt-6"
-        data={data}
-        showLegend
-        index="time"
-        categories={["Temperature (°C)", "UV Index"]}
-        colors={["yellow", "rose"]}
-        minValue={0}
-        valueFormatter={dataFormatter}
-      />
+      <CardHeader>
+        <CardTitle>Temperature & UV Index</CardTitle>
+        <CardDescription>24-hour forecast</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ResponsiveContainer width="100%" height={300}>
+          <AreaChart data={data}>
+            <defs>
+              <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#eab308" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#eab308" stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id="colorUV" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#f43f5e" stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+            <XAxis
+              dataKey="time"
+              className="text-xs"
+              tick={{ fill: "hsl(var(--foreground))" }}
+            />
+            <YAxis
+              className="text-xs"
+              tick={{ fill: "hsl(var(--foreground))" }}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "hsl(var(--background))",
+                border: "1px solid hsl(var(--border))",
+                borderRadius: "var(--radius)",
+              }}
+            />
+            <Legend />
+            <Area
+              type="monotone"
+              dataKey="Temperature (°C)"
+              stroke="#eab308"
+              fillOpacity={1}
+              fill="url(#colorTemp)"
+            />
+            <Area
+              type="monotone"
+              dataKey="UV Index"
+              stroke="#f43f5e"
+              fillOpacity={1}
+              fill="url(#colorUV)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </CardContent>
     </Card>
   );
 }

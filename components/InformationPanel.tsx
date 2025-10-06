@@ -1,8 +1,8 @@
 import React from "react";
-import CityPicker from "./CityPicker";
+import LocationForm from "./form/location-form/LocationForm";
 import Image from "next/image";
 import weatherCodeToString from "@/lib/weatherCodeToString";
-import { MoonIcon, SunIcon } from "@heroicons/react/solid";
+import { Moon, Sun } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ function InformationPanel({ city, lat, long, results }: Props) {
           Long/Lat: {long}, {lat}
         </p>
       </div>
-      <CityPicker />
+      <LocationForm />
       <hr className="my-10" />
       <div className="mt-5 flex items-center justify-between space-x-10 mb-5">
         <div>
@@ -79,7 +79,7 @@ function InformationPanel({ city, lat, long, results }: Props) {
 
 const SunItem = ({ time }: { time: number }) => (
   <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
-    <SunIcon className="h-10 w-10 text-gray-400" />
+    <Sun className="h-10 w-10 text-gray-400" />
     <div className="flex-1 flex justify-between items-center">
       <p className="font-extralight">Sunrise</p>
       <p className="uppercase text-2xl">{moment.unix(time).format("HH:mm")}</p>
@@ -89,7 +89,7 @@ const SunItem = ({ time }: { time: number }) => (
 
 const SunsetItem = ({ time }: { time: number }) => (
   <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
-    <MoonIcon className="h-10 w-10 text-gray-400" />
+    <Moon className="h-10 w-10 text-gray-400" />
     <div className="flex-1 flex justify-between items-center">
       <p className="font-extralight">Sunset</p>
       <p className="uppercase text-2xl">{moment.unix(time).format("HH:mm")}</p>
