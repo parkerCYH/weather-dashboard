@@ -1,34 +1,26 @@
-import { getClient } from "@/apollo-client";
 import CalloutCard from "@/components/CalloutCard";
 import HumidityChart from "@/components/HumidityChart";
 import InformationPanel from "@/components/InformationPanel";
 import RainChart from "@/components/RainChart";
 import StatCard from "@/components/StatCard";
 import TempChart from "@/components/TempChart";
-import fetchWeatherQuery from "@/graphql/queries/fetchWeatherQueries";
+import { getMockWeatherData } from "@/lib/mockWeatherData";
 
 export const revalidate = 60;
 
 type Props = {
-  params: {
+  params: Promise<{
     city: string;
     lat: string;
     long: string;
-  };
+  }>;
 };
 
-async function WeatherPage({ params: { city, lat, long } }: Props) {
-  const client = getClient();
+async function WeatherPage(props: Props) {
+  const params = await props.params;
+  const { city, lat, long } = params;
 
-  const { data } = await client.query({
-    query: fetchWeatherQuery,
-    variables: {
-      current_weather: "true",
-      longitude: long,
-      latitude: lat,
-    },
-  });
-  const results: Root = data.myQuery;
+  const results: Root = getMockWeatherData(lat, long);
 
   return (
     <div className="flex flex-col  min-h-screen md:flex-row ">

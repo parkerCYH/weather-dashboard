@@ -1,17 +1,33 @@
-import { Card, Color, Metric, Text } from "@tremor/react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 
 type Props = {
   title: string;
   metric: string;
-  color?: Color;
+  color?: string;
 };
 
-function StatCard({ title, metric, color }: Props) {
+const colorClasses: Record<string, string> = {
+  yellow: "border-t-yellow-500",
+  green: "border-t-green-500",
+  rose: "border-t-rose-500",
+  cyan: "border-t-cyan-500",
+  violet: "border-t-violet-500",
+  blue: "border-t-blue-500",
+  teal: "border-t-teal-500",
+};
+
+function StatCard({ title, metric, color = "blue" }: Props) {
   return (
-    <Card decoration="top" decorationColor={color}>
-      <Text>{title}</Text>
-      <Metric>{metric}</Metric>
+    <Card className={`border-t-4 ${colorClasses[color] || colorClasses.blue}`}>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{metric}</div>
+      </CardContent>
     </Card>
   );
 }

@@ -1,0 +1,211 @@
+"use client";
+import { City, Country } from "country-state-city";
+import { Globe } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { isEmpty, isNil, isNotNil } from "ramda";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const options = Country.getAllCountries().map((country) => ({
+  value: country.isoCode,
+  label: country.name,
+}));
+
+function CityPicker() {
+  const [selectedCountry, setSelectedCountry] = useState<string>();
+  const [selectedCity, setSelectedCity] = useState<string | null>();
+  const [openCountry, setOpenCountry] = useState(false);
+  const [openCity, setOpenCity] = useState(false);
+  const router = useRouter();
+
+  const handleSelectedCountry = (value: string) => {
+    setSelectedCountry(value);
+    setSelectedCity(null);
+    setOpenCountry(false);
+  };
+
+  const handleSelectedCity = (value: string) => {
+    setSelectedCity(value);
+    setOpenCity(false);
+  };
+
+  const cityOptions = useMemo(() => {
+    if (!selectedCountry) {
+      return [];
+    }
+
+    const cities = City.getCitiesOfCountry(selectedCountry);
+
+    if (isEmpty(cities) || isNil(cities)) {
+      return [];
+    }
+
+    const filteredCities = cities.filter((city) => {
+      if (isNil(city.latitude) || isNil(city.longitude)) {
+        console.warn(`${city.name} has undefined latitude or longitude`);
+        return false;
+      }
+      return true;
+    });
+
+    return filteredCities.map((city) => ({
+      value: `${city.name}/${city.latitude}/${city.longitude}`,
+      label: city.name,
+    }));
+  }, [selectedCountry]);
+
+  const locationPath = useMemo(() => {
+    if (isNil(selectedCountry)) {
+      return "";
+    }
+    const cities = City.getCitiesOfCountry(selectedCountry);
+    if (isNil(selectedCity) && isNotNil(selectedCountry) && isNotNil(cities)) {
+      const countryInfo = Country.getCountryByCode(selectedCountry);
+      if (isNotNil(countryInfo)) {
+        const { name, latitude, longitude } = countryInfo;
+        return `${name}/${latitude}/${longitude}`;
+      }
+      return "";
+    }
+    if (isNotNil(selectedCity)) {
+      return selectedCity;
+    }
+    return "";
+  }, [selectedCity, selectedCountry]);
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <div className="flex items-center space-x-2 text-white/80">
+          <Globe className="h-5 w-5 text-white" />
+          <label htmlFor="country">Country</label>
+        </div>
+        <Popover open={openCountry} onOpenChange={setOpenCountry}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={openCountry}
+              className="w-full justify-between"
+            >
+              {selectedCountry
+                ? options.find((option) => option.value === selectedCountry)
+                    ?.label
+                : "Select country..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[400px] p-0">
+            <Command>
+              <CommandInput placeholder="Search country..." />
+              <CommandList>
+                <CommandEmpty>No country found.</CommandEmpty>
+                <CommandGroup>
+                  {options.map((option) => (
+                    <CommandItem
+                      key={option.value}
+                      value={option.value}
+                      onSelect={handleSelectedCountry}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          selectedCountry === option.value
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                      {option.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      {!isNil(selectedCountry) && !isEmpty(cityOptions) && (
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2 text-white/80">
+            <Globe className="h-5 w-5 text-white" />
+            <label htmlFor="city">City</label>
+          </div>
+          <Popover open={openCity} onOpenChange={setOpenCity}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openCity}
+                className="w-full justify-between"
+              >
+                {selectedCity
+                  ? cityOptions.find((option) => option.value === selectedCity)
+                      ?.label
+                  : "Select city..."}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[400px] p-0">
+              <Command>
+                <CommandInput placeholder="Search city..." />
+                <CommandList>
+                  <CommandEmpty>No city found.</CommandEmpty>
+                  <CommandGroup>
+                    {cityOptions.map((option) => (
+                      <CommandItem
+                        key={option.value}
+                        value={option.value}
+                        onSelect={handleSelectedCity}
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            selectedCity === option.value
+                              ? "opacity-100"
+                              : "opacity-0"
+                          )}
+                        />
+                        {option.label}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+      )}
+
+      <div className="pt-4">
+        <Button
+          className="w-full"
+          variant="secondary"
+          disabled={isEmpty(locationPath)}
+          onClick={() => {
+            router.push(`/location/${locationPath}`);
+          }}
+        >
+          Go
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default CityPicker;

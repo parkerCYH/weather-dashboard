@@ -1,7 +1,7 @@
 "use client";
 
-import { CheckCircleIcon, ExclamationIcon } from "@heroicons/react/solid";
-import { Callout } from "@tremor/react";
+import { CheckCircle, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 type Props = {
   message: string;
@@ -9,13 +9,14 @@ type Props = {
 };
 
 function CalloutCard({ message, warning }: Props) {
+  const Icon = warning ? AlertCircle : CheckCircle;
+
   return (
-    <Callout
-      className="mt-4"
-      title={message}
-      icon={warning ? ExclamationIcon : CheckCircleIcon}
-      color={warning ? "rose" : "teal"}
-    />
+    <Alert variant={warning ? "destructive" : "default"} className="mt-4">
+      <Icon className="h-4 w-4" />
+      <AlertTitle>{warning ? "Warning" : "Info"}</AlertTitle>
+      <AlertDescription>{message}</AlertDescription>
+    </Alert>
   );
 }
 
