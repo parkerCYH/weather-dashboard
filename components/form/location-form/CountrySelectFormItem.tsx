@@ -1,7 +1,6 @@
 "use client";
 
-import { getAllCountries } from "@/lib/mockCoordinates";
-import { useMemo } from "react";
+import { useCountries } from "@/lib/hooks/useLocation";
 import { useFormContext } from "react-hook-form";
 import { LocationFormData, LOCATION_FORM_FIELDS } from "./constants";
 import { FormField } from "@/components/ui/form";
@@ -11,9 +10,7 @@ function CountrySelectFormItem() {
   const { watch, setValue } = useFormContext<LocationFormData>();
   const value = watch(LOCATION_FORM_FIELDS.COUNTRY_CODE);
 
-  const countryOptions = useMemo(() => {
-    return getAllCountries();
-  }, []);
+  const { data: countryOptions = [], isLoading } = useCountries();
 
   return (
     <FormField
@@ -27,7 +24,8 @@ function CountrySelectFormItem() {
           setValue(LOCATION_FORM_FIELDS.COUNTRY_CODE, newValue)
         }
         options={countryOptions}
-        placeholder="Select country..."
+        placeholder={isLoading ? "Loading countries..." : "Select country..."}
+        disabled={isLoading}
       />
     </FormField>
   );
