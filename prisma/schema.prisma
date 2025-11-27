@@ -1,13 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
 model Country {
@@ -20,22 +17,22 @@ model Country {
 }
 
 model City {
-  id          Int     @id @default(autoincrement())
-  code        String  @unique
+  id          Int          @id @default(autoincrement())
+  code        String       @unique
   name        String
   countryId   Int
-  country     Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  country     Country      @relation(fields: [countryId], references: [id], onDelete: Cascade)
   coordinates Coordinates?
 
   @@map("cities")
 }
 
 model Coordinates {
-  id        Int    @id @default(autoincrement())
-  cityId    Int    @unique
+  id        Int   @id @default(autoincrement())
+  cityId    Int   @unique
   latitude  Float
   longitude Float
-  city      City   @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  city      City  @relation(fields: [cityId], references: [id], onDelete: Cascade)
 
   @@map("coordinates")
 }
