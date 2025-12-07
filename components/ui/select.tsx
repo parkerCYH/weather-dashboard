@@ -191,9 +191,7 @@ const Select = React.forwardRef<
         disabled={disabled}
       >
         <SelectTrigger ref={ref} className={className}>
-          <SelectValue placeholder={placeholder}>
-            {value && options.find((opt) => opt.code === value)?.name}
-          </SelectValue>
+          <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent className="bg-white">
           {options.map((option) => (
