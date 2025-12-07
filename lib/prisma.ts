@@ -1,10 +1,9 @@
-import "dotenv/config";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "../generated/prisma/client";
 
-const connectionString = `${process.env.DATABASE_URL}`;
-
-const adapter = new PrismaBetterSqlite3({ url: connectionString });
-const prisma = new PrismaClient({ adapter });
+// Initialize Prisma Client with Accelerate connection string
+// Next.js automatically loads .env.local and .env files
+const prisma = new PrismaClient({
+  accelerateUrl: process.env.PRISMA_POSTGRES_PARKER_SP_ORM_KEY!,
+});
 
 export { prisma };
