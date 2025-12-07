@@ -7,6 +7,8 @@ export const env = createEnv({
       .enum(["development", "production", "test"])
       .default("development"),
     PARKER_GCP_TEST_API_KEY: z.string(),
+    PRISMA_POSTGRES_PARKER_SP_ORM_KEY: z.string(),
+    PRISMA_POSTGRES_PARKER_SP_KEY_ANY_CLIENT: z.string(),
   },
 
   client: {
@@ -20,6 +22,10 @@ export const env = createEnv({
     NEXT_PUBLIC_PARKER_GCP_TEST_API_KEY:
       process.env.NEXT_PUBLIC_PARKER_GCP_TEST_API_KEY,
     PARKER_GCP_TEST_API_KEY: process.env.PARKER_GCP_TEST_API_KEY,
+    PRISMA_POSTGRES_PARKER_SP_ORM_KEY:
+      process.env.PRISMA_POSTGRES_PARKER_SP_ORM_KEY,
+    PRISMA_POSTGRES_PARKER_SP_KEY_ANY_CLIENT:
+      process.env.PRISMA_POSTGRES_PARKER_SP_KEY_ANY_CLIENT,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
