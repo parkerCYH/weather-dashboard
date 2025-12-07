@@ -57,7 +57,7 @@ async function WeatherPage(props: Props) {
             </p>
           </div>
           <div className="m-2 mb-10">
-            <CalloutCard message="suggestion content" />
+            <CalloutCard weatherData={results} />
           </div>
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 m-2">
             <StatCard
@@ -77,12 +77,6 @@ async function WeatherPage(props: Props) {
                 metric={results.daily.uv_index_max?.[0].toFixed(1)}
                 color="rose"
               />
-              {Number(results.daily.uv_index_max?.[0].toFixed(1)) > 5 && (
-                <CalloutCard
-                  message="The UV is high today, be sure to wear SPF!"
-                  warning
-                />
-              )}
             </div>
             <div className="flex space-x-3">
               <StatCard

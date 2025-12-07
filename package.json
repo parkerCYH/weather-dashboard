@@ -15,6 +15,7 @@
     "prisma:seed": "ts-node scripts/seed.ts"
   },
   "dependencies": {
+    "@google/genai": "^1.31.0",
     "@hookform/resolvers": "^5.2.2",
     "@next/eslint-plugin-next": "16.0.0-beta.0",
     "@prisma/adapter-better-sqlite3": "^7.0.1",
@@ -70,5 +71,6 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
-  }
+  },
+  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a"
 }
