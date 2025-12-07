@@ -1,6 +1,15 @@
-import { PrismaClient } from '@prisma/client';
+import { config } from 'dotenv';
+import { resolve } from 'path';
+import { PrismaClient } from '../generated/prisma/client';
 
-const prisma = new PrismaClient();
+// Load environment variables
+config({ path: resolve(process.cwd(), '.env.local') });
+config({ path: resolve(process.cwd(), '.env') });
+
+// Use Accelerate connection for seeding
+const prisma = new PrismaClient({
+  accelerateUrl: process.env.PRISMA_POSTGRES_PARKER_SP_ORM_KEY!,
+});
 
 async function main() {
   console.log('🌱 開始種子數據...');

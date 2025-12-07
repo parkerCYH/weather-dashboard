@@ -12,7 +12,7 @@
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prisma:seed": "ts-node scripts/seed.ts"
+    "prisma:seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@google/genai": "^1.31.0",
