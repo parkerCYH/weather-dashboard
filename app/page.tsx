@@ -1,5 +1,3 @@
-"use client";
-
 import LocationForm from "@/components/form/location-form/LocationForm";
 import {
   Card,
@@ -9,8 +7,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { getServerAuthSession } from "@/lib/getServerAuthSession";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    redirect("/login");
+  }
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#bd5656] to-[#e47070] p-10 flex flex-col justify-center items-center">
       <Card className="w-full max-w-4xl">

@@ -2,11 +2,9 @@ import { config } from "dotenv";
 import { resolve } from "path";
 import { PrismaClient } from "../generated/prisma/client";
 
-// Load environment variables
 config({ path: resolve(process.cwd(), ".env.local") });
 config({ path: resolve(process.cwd(), ".env") });
 
-// Use Accelerate connection for seeding
 const prisma = new PrismaClient({
   accelerateUrl: process.env.PRISMA_POSTGRES_PARKER_SP_ORM_KEY!,
 });
@@ -14,12 +12,10 @@ const prisma = new PrismaClient({
 async function main() {
   console.log("🌱 開始種子數據...");
 
-  // 清空現有數據
   await prisma.coordinates.deleteMany();
   await prisma.city.deleteMany();
   await prisma.country.deleteMany();
 
-  // 創建國家
   const countries = await Promise.all([
     prisma.country.create({ data: { code: "CN", name: "China" } }),
     prisma.country.create({ data: { code: "US", name: "United States" } }),

@@ -9,6 +9,10 @@ export const env = createEnv({
     PARKER_GCP_TEST_API_KEY: z.string(),
     PRISMA_POSTGRES_PARKER_SP_ORM_KEY: z.string(),
     PRISMA_POSTGRES_PARKER_SP_KEY_ANY_CLIENT: z.string(),
+    GITHUB_CLIENT_ID: z.string(),
+    GITHUB_CLIENT_SECRET: z.string(),
+    NEXTAUTH_SECRET: z.string(),
+    NEXTAUTH_URL: z.string().url(),
   },
 
   client: {
@@ -23,6 +27,10 @@ export const env = createEnv({
       process.env.PRISMA_POSTGRES_PARKER_SP_ORM_KEY,
     PRISMA_POSTGRES_PARKER_SP_KEY_ANY_CLIENT:
       process.env.PRISMA_POSTGRES_PARKER_SP_KEY_ANY_CLIENT,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

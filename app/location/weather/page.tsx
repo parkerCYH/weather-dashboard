@@ -7,6 +7,7 @@ import TempChart from "@/components/TempChart";
 import { getMockWeatherData } from "@/lib/mockWeatherData";
 import { getCoordinates } from "@/lib/mockCoordinates";
 import { redirect } from "next/navigation";
+import { getServerAuthSession } from "@/lib/getServerAuthSession";
 
 export const revalidate = 60;
 
@@ -18,15 +19,19 @@ type Props = {
 };
 
 async function WeatherPage(props: Props) {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    redirect("/login");
+  }
+
   const searchParams = await props.searchParams;
   const { country, city } = searchParams;
 
-  // Redirect if missing required parameters
   if (!country || !city) {
     redirect("/");
   }
 
-  // Get coordinates using the new API
   const coordinates = getCoordinates(country, city);
 
   if (!coordinates) {
