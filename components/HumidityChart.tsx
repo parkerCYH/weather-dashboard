@@ -66,7 +66,7 @@ function HumidityChart({ results }: Props) {
                 border: "1px solid hsl(var(--border))",
                 borderRadius: "var(--radius)",
               }}
-              formatter={(value: number) => `${value}%`}
+              formatter={(value) => `${value}%`}
             />
             <Legend />
             <Area

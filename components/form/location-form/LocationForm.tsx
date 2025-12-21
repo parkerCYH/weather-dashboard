@@ -27,7 +27,7 @@ function LocationForm() {
 
     if (coordinates) {
       router.push(
-        `/location/weather?country=${data.countryCode}&city=${data.cityCode}` as any
+        `/weather-dashboard?country=${data.countryCode}&city=${data.cityCode}` 
       );
     } else {
       console.error("Coordinates not found for the selected location");

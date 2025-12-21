@@ -15,7 +15,7 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     async redirect({ url, baseUrl }) {
-      // 如果是 localhost 發起的 login，就送回 localhost
+
       if (url.includes("localhost")) {
         return "http://localhost:3000";
       }

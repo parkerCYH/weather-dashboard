@@ -4,7 +4,6 @@ import InformationPanel from "@/components/InformationPanel";
 import RainChart from "@/components/RainChart";
 import StatCard from "@/components/StatCard";
 import TempChart from "@/components/TempChart";
-import { getMockWeatherData } from "@/lib/mockWeatherData";
 import { getCoordinates } from "@/lib/mockCoordinates";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/getServerAuthSession";
@@ -42,7 +41,18 @@ async function WeatherPage(props: Props) {
   const long = coordinates.longitude.toString();
   const cityName = coordinates.cityName;
 
-  const results: Root = getMockWeatherData(lat, long);
+
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/weather?latitude=${lat}&longitude=${long}`;
+  const response = await fetch(apiUrl, {
+    next: { revalidate: 60 },
+  });
+
+  if (!response.ok) {
+    console.error("Failed to fetch weather data");
+    redirect("/");
+  }
+
+  const results: Root = await response.json();
 
   return (
     <div className="flex flex-col  min-h-screen md:flex-row ">

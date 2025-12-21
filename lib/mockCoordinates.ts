@@ -20,29 +20,7 @@ type CityCoordinates = {
   latitude: number;
   longitude: number;
 };
-
-// Mock countries data
-const mockCountries: Country[] = [
-  { code: "CN", name: "China" },
-  { code: "US", name: "United States" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "FR", name: "France" },
-  { code: "RU", name: "Russia" },
-];
-
-// Mock cities data
-const mockCities: City[] = [
-  { code: "BJ", name: "Beijing", countryCode: "CN" },
-  { code: "SH", name: "Shanghai", countryCode: "CN" },
-  { code: "NYC", name: "New York", countryCode: "US" },
-  { code: "LA", name: "Los Angeles", countryCode: "US" },
-  { code: "LON", name: "London", countryCode: "GB" },
-  { code: "MAN", name: "Manchester", countryCode: "GB" },
-  { code: "PAR", name: "Paris", countryCode: "FR" },
-  { code: "LYO", name: "Lyon", countryCode: "FR" },
-  { code: "MOW", name: "Moscow", countryCode: "RU" },
-  { code: "SPB", name: "St. Petersburg", countryCode: "RU" },
-];
+ 
 
 // Mock coordinates data
 const mockCoordinates: CityCoordinates[] = [
@@ -127,32 +105,7 @@ const mockCoordinates: CityCoordinates[] = [
     longitude: 30.3609,
   },
 ];
-
-/**
- * API 1: Get all countries
- * @returns Array of all available countries
- */
-export function getAllCountries(): Country[] {
-  return mockCountries;
-}
-
-/**
- * API 2: Get all cities by country code
- * @param countryCode - The country code (e.g., "CN", "US")
- * @returns Array of cities in the specified country
- */
-export function getCitiesByCountry(countryCode: string): City[] {
-  return mockCities.filter(
-    (city) => city.countryCode.toLowerCase() === countryCode.toLowerCase()
-  );
-}
-
-/**
- * API 3: Get coordinates by country and city code
- * @param countryCode - The country code (e.g., "CN", "US")
- * @param cityCode - The city code (e.g., "BJ", "NYC")
- * @returns Coordinates object or undefined if not found
- */
+  
 export function getCoordinates(
   countryCode: string,
   cityCode: string
@@ -163,13 +116,7 @@ export function getCoordinates(
       coord.cityCode.toLowerCase() === cityCode.toLowerCase()
   );
 }
-
-// Legacy functions for backward compatibility
-/**
- * Get coordinates for a city (legacy function)
- * @param cityName - The name of the city
- * @returns Coordinates object or undefined if not found
- */
+ 
 export function getMockCoordinates(
   cityName: string
 ): CityCoordinates | undefined {
@@ -177,10 +124,7 @@ export function getMockCoordinates(
     (coord) => coord.cityName.toLowerCase() === cityName.toLowerCase()
   );
 }
-
-/**
- * Get all available mock cities (legacy function)
- */
+ 
 export function getAllMockCities(): CityCoordinates[] {
   return mockCoordinates;
 }
