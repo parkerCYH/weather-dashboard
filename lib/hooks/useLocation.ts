@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAllCountries, getCitiesByCountry } from "@/lib/api";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getAllCountries, getCitiesByCountry, getCoordinates } from "@/lib/api";
 
 /**
  * Hook to fetch all countries
@@ -19,5 +19,15 @@ export function useCities(countryCode: string | undefined) {
     queryKey: ["cities", countryCode],
     queryFn: () => getCitiesByCountry(countryCode!),
     enabled: !!countryCode,
+  });
+}
+
+/**
+ * Hook to fetch coordinates by country and city code
+ */
+export function useGetCoordinates() {
+  return useMutation({
+    mutationFn: ({ countryCode, cityCode }: { countryCode: string; cityCode: string }) =>
+      getCoordinates(countryCode, cityCode),
   });
 }

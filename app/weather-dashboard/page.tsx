@@ -21,20 +21,20 @@ async function WeatherPage(props: Props) {
   const session = await getServerAuthSession();
 
   if (!session) {
-    redirect("/login");
+    redirect("/login?error=unauthorized&message=Please sign in to view weather dashboard");
   }
 
   const searchParams = await props.searchParams;
   const { country, city } = searchParams;
 
   if (!country || !city) {
-    redirect("/");
+    redirect("/?error=missing_location&message=Please select a country and city");
   }
 
   const coordinates = getCoordinates(country, city);
 
   if (!coordinates) {
-    redirect("/");
+    redirect("/?error=invalid_location&message=Could not find coordinates for selected location");
   }
 
   const lat = coordinates.latitude.toString();
@@ -49,7 +49,7 @@ async function WeatherPage(props: Props) {
 
   if (!response.ok) {
     console.error("Failed to fetch weather data");
-    redirect("/");
+    redirect("/?error=api_error&message=Failed to fetch weather data. Please try again later");
   }
 
   const results: Root = await response.json();

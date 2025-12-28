@@ -11,16 +11,16 @@ export const currentWeatherSchema = z.object({
 });
  
 export const dailySchema = z.object({
-  apparent_temperature_max: z.tuple([z.number()]),
-  apparent_temperature_min: z.tuple([z.number()]),
-  sunrise: z.tuple([z.number()]),
-  sunset: z.tuple([z.number()]),
-  temperature_2m_max: z.tuple([z.number()]),
-  temperature_2m_min: z.tuple([z.number()]),
-  time: z.tuple([z.number()]),
-  uv_index_clear_sky_max: z.tuple([z.number()]),
-  uv_index_max: z.tuple([z.number()]),
-  weathercode: z.tuple([z.number()]),
+  apparent_temperature_max: z.array(z.number()),
+  apparent_temperature_min: z.array(z.number()),
+  sunrise: z.array(z.number()),
+  sunset: z.array(z.number()),
+  temperature_2m_max: z.array(z.number()),
+  temperature_2m_min: z.array(z.number()),
+  time: z.array(z.number()),
+  uv_index_clear_sky_max: z.array(z.number()),
+  uv_index_max: z.array(z.number()),
+  weathercode: z.array(z.number()),
 });
  
 export const dailyUnitsSchema = z.object({
@@ -37,20 +37,20 @@ export const dailyUnitsSchema = z.object({
 });
  
 export const hourlySchema = z.object({
-  apparent_temperature: z.tuple([z.number()]),
-  dewpoint_2m: z.tuple([z.number()]),
-  is_day: z.tuple([z.number()]),
-  precipitation: z.tuple([z.number()]),
-  precipitation_probability: z.tuple([z.number()]),
-  rain: z.tuple([z.number()]),
-  relativehumidity_2m: z.tuple([z.number()]),
-  showers: z.tuple([z.number()]),
-  snow_depth: z.tuple([z.number()]),
-  snowfall: z.tuple([z.number()]),
-  temperature_2m: z.tuple([z.number()]),
-  time: z.tuple([z.number()]),
-  uv_index: z.tuple([z.number()]),
-  uv_index_clear_sky: z.tuple([z.number()]),
+  apparent_temperature: z.array(z.number()),
+  dewpoint_2m: z.array(z.number()),
+  is_day: z.array(z.number()),
+  precipitation: z.array(z.number()),
+  precipitation_probability: z.array(z.number()),
+  rain: z.array(z.number()),
+  relativehumidity_2m: z.array(z.number()),
+  showers: z.array(z.number()),
+  snow_depth: z.array(z.number()),
+  snowfall: z.array(z.number()),
+  temperature_2m: z.array(z.number()),
+  time: z.array(z.number()),
+  uv_index: z.array(z.number()),
+  uv_index_clear_sky: z.array(z.number()),
 });
  
 export const hourlyUnitsSchema = z.object({

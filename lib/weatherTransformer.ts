@@ -205,20 +205,20 @@ export function transformWeatherData(data: OpenMeteoResponse): Root {
     daily: {
       time: data.daily.time.map((t: string) =>
         Math.floor(new Date(t).getTime() / 1000)
-      ) as [number],
-      weathercode: data.daily.weather_code as [number],
-      temperature_2m_max: data.daily.temperature_2m_max as [number],
-      temperature_2m_min: data.daily.temperature_2m_min as [number],
-      apparent_temperature_max: data.daily.apparent_temperature_max as [number],
-      apparent_temperature_min: data.daily.apparent_temperature_min as [number],
+      ),
+      weathercode: data.daily.weather_code,
+      temperature_2m_max: data.daily.temperature_2m_max,
+      temperature_2m_min: data.daily.temperature_2m_min,
+      apparent_temperature_max: data.daily.apparent_temperature_max,
+      apparent_temperature_min: data.daily.apparent_temperature_min,
       sunrise: data.daily.sunrise.map((t: string) =>
         Math.floor(new Date(t).getTime() / 1000)
-      ) as [number],
+      ),
       sunset: data.daily.sunset.map((t: string) =>
         Math.floor(new Date(t).getTime() / 1000)
-      ) as [number],
-      uv_index_max: data.daily.uv_index_max as [number],
-      uv_index_clear_sky_max: data.daily.uv_index_clear_sky_max as [number],
+      ),
+      uv_index_max: data.daily.uv_index_max,
+      uv_index_clear_sky_max: data.daily.uv_index_clear_sky_max,
     },
     daily_units: {
       time: "unixtime",
@@ -235,20 +235,20 @@ export function transformWeatherData(data: OpenMeteoResponse): Root {
     hourly: {
       time: data.hourly.time.map((t: string) =>
         Math.floor(new Date(t).getTime() / 1000)
-      ) as [number],
-      temperature_2m: data.hourly.temperature_2m as [number],
-      relativehumidity_2m: data.hourly.relative_humidity_2m as [number],
-      dewpoint_2m: data.hourly.dewpoint_2m as [number],
-      apparent_temperature: data.hourly.apparent_temperature as [number],
-      precipitation_probability: data.hourly.precipitation_probability as [number],
-      precipitation: data.hourly.precipitation as [number],
-      rain: data.hourly.rain as [number],
-      showers: data.hourly.showers as [number],
-      snowfall: data.hourly.snowfall as [number],
-      snow_depth: data.hourly.snow_depth as [number],
-      is_day: data.hourly.is_day as [number],
-      uv_index: data.hourly.uv_index as [number],
-      uv_index_clear_sky: data.hourly.uv_index_clear_sky as [number],
+      ),
+      temperature_2m: data.hourly.temperature_2m,
+      relativehumidity_2m: data.hourly.relative_humidity_2m,
+      dewpoint_2m: data.hourly.dewpoint_2m,
+      apparent_temperature: data.hourly.apparent_temperature,
+      precipitation_probability: data.hourly.precipitation_probability,
+      precipitation: data.hourly.precipitation,
+      rain: data.hourly.rain,
+      showers: data.hourly.showers,
+      snowfall: data.hourly.snowfall,
+      snow_depth: data.hourly.snow_depth,
+      is_day: data.hourly.is_day,
+      uv_index: data.hourly.uv_index,
+      uv_index_clear_sky: data.hourly.uv_index_clear_sky,
     },
     hourly_units: {
       time: "unixtime",

@@ -2,9 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { getCoordinates } from "@/lib/mockCoordinates";
+import { useGetCoordinates } from "@/lib/hooks/useLocation";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { Loader2, AlertCircle } from "lucide-react";
+import { useEffect } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import CitySelectFormItem from "./CitySelectFormItem";
 import CountrySelectFormItem from "./CountrySelectFormItem";
 import { LocationFormData } from "./constants";
@@ -21,21 +24,32 @@ function LocationForm() {
     },
   });
 
+  const mutation = useGetCoordinates();
+
+  useEffect(() => {
+    if (mutation.isSuccess && mutation.variables) {
+      router.push(
+        `/weather-dashboard?country=${mutation.variables.countryCode}&city=${mutation.variables.cityCode}` 
+      );
+    }
+  }, [mutation.isSuccess, mutation.variables, router]);
+
   const onSubmit = async (data: LocationFormData) => {
     if (!data.countryCode || !data.cityCode) return;
-    const coordinates = getCoordinates(data.countryCode, data.cityCode);
-
-    if (coordinates) {
-      router.push(
-        `/weather-dashboard?country=${data.countryCode}&city=${data.cityCode}` 
-      );
-    } else {
-      console.error("Coordinates not found for the selected location");
-    }
+    mutation.mutate({ countryCode: data.countryCode, cityCode: data.cityCode });
   };
 
   return (
     <Form form={form} onSubmit={onSubmit} className="space-y-4">
+      {mutation.isError && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            Failed to fetch coordinates. Please try again.
+          </AlertDescription>
+        </Alert>
+      )}
+      
       <CountrySelectFormItem />
 
       <CitySelectFormItem />
@@ -44,8 +58,16 @@ function LocationForm() {
         type="submit"
         className="w-full mt-4 bg-white text-black"
         variant="default"
+        disabled={mutation.isPending}
       >
-        Go
+        {mutation.isPending ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Loading...
+          </>
+        ) : (
+          "Go"
+        )}
       </Button>
     </Form>
   );

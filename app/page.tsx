@@ -7,16 +7,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { getServerAuthSession } from "@/lib/getServerAuthSession";
 import { redirect } from "next/navigation";
+import { AlertCircle } from "lucide-react";
 
-export default async function Home() {
+type Props = {
+  searchParams: Promise<{
+    error?: string;
+    message?: string;
+  }>;
+};
+
+export default async function Home(props: Props) {
   const session = await getServerAuthSession();
 
   if (!session) {
     redirect("/login");
-  }
-  return (
+  }  
+  const searchParams = await props.searchParams;
+  const { error, message } = searchParams;
+    return (
     <main className="min-h-screen bg-gradient-to-br from-[#bd5656] to-[#e47070] p-10 flex flex-col justify-center items-center">
       <Card className="w-full max-w-4xl">
         <CardHeader className="text-center">
@@ -29,6 +40,13 @@ export default async function Home() {
         </CardHeader>
         <Separator className="my-6" />
         <CardContent>
+          {error && message && (
+            <Alert variant="destructive" className="mb-6">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{message}</AlertDescription>
+            </Alert>
+          )}
           <Card className="bg-gradient-to-br from-[#bd5656] to-[#e47070]">
             <CardContent className="pt-6">
               <LocationForm />
