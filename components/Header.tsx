@@ -17,23 +17,22 @@ export function Header() {
                 </Link>
 
 
-                <div className="flex items-center gap-4">
-                    {sessionData && (
+                {sessionData && (
+                    <div className="flex items-center gap-4">
                         <span className="text-sm text-gray-700">
                             {sessionData.user?.name}
                         </span>
-                    )}
-                    <button
-                        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
-                        onClick={
-                            sessionData
-                                ? () => void signOut()
-                                : () => router.push("/login")
-                        }
-                    >
-                        {sessionData ? "登出" : "登入"}
-                    </button>
-                </div>
+                        <button
+                            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+                            onClick={
+                                () => void signOut()
+
+                            }
+                        >
+                            登出
+                        </button>
+                    </div>
+                )}
             </div>
         </header>
     );

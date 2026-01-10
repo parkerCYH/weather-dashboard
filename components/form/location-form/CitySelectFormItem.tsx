@@ -1,22 +1,26 @@
 "use client";
 
 import { useCities } from "@/lib/hooks/useLocation";
-import { useEffect } from "react";
-import { useFormContext } from "react-hook-form";
+import { useEffect, useRef } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import { LocationFormData, LOCATION_FORM_FIELDS } from "./constants";
 import { FormField } from "@/components/ui/form";
 import { Select } from "@/components/ui/select";
 
 function CitySelectFormItem() {
-  const { watch, setValue } = useFormContext<LocationFormData>();
-  const value = watch(LOCATION_FORM_FIELDS.CITY_CODE);
-  const countryCode = watch(LOCATION_FORM_FIELDS.COUNTRY_CODE);
+  const { control, setValue } = useFormContext<LocationFormData>();
+  const value = useWatch({ name: LOCATION_FORM_FIELDS.CITY_CODE, control });
+  const countryCode = useWatch({ name: LOCATION_FORM_FIELDS.COUNTRY_CODE, control });
+  const previousCountryCode = useRef(countryCode);
 
   const { data: cityOptions = [], isLoading } = useCities(countryCode);
 
-  // Reset city when country changes
+
   useEffect(() => {
-    setValue(LOCATION_FORM_FIELDS.CITY_CODE, "");
+    if (previousCountryCode.current !== countryCode && previousCountryCode.current !== undefined) {
+      setValue(LOCATION_FORM_FIELDS.CITY_CODE, "");
+    }
+    previousCountryCode.current = countryCode;
   }, [countryCode, setValue]);
 
   const isDisabled = !countryCode || isLoading;
@@ -37,8 +41,8 @@ function CitySelectFormItem() {
           !countryCode
             ? "Select country first..."
             : isLoading
-            ? "Loading cities..."
-            : "Select city..."
+              ? "Loading cities..."
+              : "Select city..."
         }
         disabled={isDisabled}
       />

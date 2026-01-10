@@ -12,12 +12,12 @@ type Props = {
 export default async function LoginPage(props: Props) {
   const searchParams = await props.searchParams;
   const { error, message } = searchParams;
-  
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Weather <span className="text-[hsl(280,100%,70%)]">Dashboard</span>
+        <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 sm:text-[5rem]">
+          Weather <span className="text-blue-600">Dashboard</span>
         </h1>
         {error && message && (
           <Alert variant="destructive" className="max-w-md">

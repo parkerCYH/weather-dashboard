@@ -24,11 +24,11 @@ export default async function Home(props: Props) {
 
   if (!session) {
     redirect("/login");
-  }  
+  }
   const searchParams = await props.searchParams;
   const { error, message } = searchParams;
-    return (
-    <main className="min-h-screen bg-gradient-to-br from-[#bd5656] to-[#e47070] p-10 flex flex-col justify-center items-center">
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-10 flex flex-col justify-center items-center">
       <Card className="w-full max-w-4xl">
         <CardHeader className="text-center">
           <CardTitle className="text-6xl font-bold mb-4">
@@ -47,7 +47,7 @@ export default async function Home(props: Props) {
               <AlertDescription>{message}</AlertDescription>
             </Alert>
           )}
-          <Card className="bg-gradient-to-br from-[#bd5656] to-[#e47070]">
+          <Card className="bg-white shadow-md">
             <CardContent className="pt-6">
               <LocationForm />
             </CardContent>

@@ -1,14 +1,14 @@
 "use client";
 
 import { useCountries } from "@/lib/hooks/useLocation";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { LocationFormData, LOCATION_FORM_FIELDS } from "./constants";
 import { FormField } from "@/components/ui/form";
 import { Select } from "@/components/ui/select";
 
 function CountrySelectFormItem() {
-  const { watch, setValue } = useFormContext<LocationFormData>();
-  const value = watch(LOCATION_FORM_FIELDS.COUNTRY_CODE);
+  const { control, setValue } = useFormContext<LocationFormData>();
+  const countryCode = useWatch({ name: LOCATION_FORM_FIELDS.COUNTRY_CODE, control });
 
   const { data: countryOptions = [], isLoading } = useCountries();
 
@@ -19,7 +19,7 @@ function CountrySelectFormItem() {
       rules={{ required: "Country is required" }}
     >
       <Select
-        value={value}
+        value={countryCode}
         onValueChange={(newValue) =>
           setValue(LOCATION_FORM_FIELDS.COUNTRY_CODE, newValue)
         }

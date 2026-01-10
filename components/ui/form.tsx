@@ -81,8 +81,8 @@ const FormField = <
           {...props}
           render={() => (
             <FormItem>
-              <FormLabel className="flex items-center space-x-2 text-white/80">
-                <Globe className="h-5 w-5 text-white" />
+              <FormLabel className="flex items-center space-x-2 text-gray-900">
+                <Globe className="h-5 w-5 text-blue-600" />
                 <span>{label}</span>
               </FormLabel>
               <FormControl>{children}</FormControl>

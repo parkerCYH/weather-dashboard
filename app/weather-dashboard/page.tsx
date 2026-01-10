@@ -55,7 +55,7 @@ async function WeatherPage(props: Props) {
   const results: Root = await response.json();
 
   return (
-    <div className="flex flex-col  min-h-screen md:flex-row ">
+    <div className="flex flex-col min-h-screen md:flex-row bg-gray-50">
       <InformationPanel
         city={cityName}
         lat={lat}

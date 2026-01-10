@@ -15,12 +15,12 @@ type Props = {
 
 function InformationPanel({ city, lat, long, results }: Props) {
   return (
-    <div className="bg-gradient-to-br from-[#bd5656] to-[#e47070] p-10  text-white">
+    <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-10 text-gray-900 border-r border-gray-200">
       <div className="pb-5">
         <h1 className="text-6xl font-bold">
           <Link href="/">{decodeURI(city)}</Link>
         </h1>
-        <p className="text-xs text-gray-200">
+        <p className="text-xs text-gray-600">
           Long/Lat: {long}, {lat}
         </p>
       </div>
@@ -52,9 +52,8 @@ function InformationPanel({ city, lat, long, results }: Props) {
       <div className=" flex justify-between items-center">
         <div>
           <Image
-            src={`https://www.weatherbit.io/static/img/icons/${
-              weatherCodeToString[results.current_weather.weathercode].icon
-            }.png`}
+            src={`https://www.weatherbit.io/static/img/icons/${weatherCodeToString[results.current_weather.weathercode].icon
+              }.png`}
             alt={weatherCodeToString[results.current_weather.weathercode].label}
             width={75}
             height={75}
@@ -78,8 +77,8 @@ function InformationPanel({ city, lat, long, results }: Props) {
 }
 
 const SunItem = ({ time }: { time: number }) => (
-  <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
-    <Sun className="h-10 w-10 text-gray-400" />
+  <div className="flex items-center space-x-2 px-4 py-3 border border-blue-200 rounded-md bg-white shadow-sm">
+    <Sun className="h-10 w-10 text-yellow-500" />
     <div className="flex-1 flex justify-between items-center">
       <p className="font-extralight">Sunrise</p>
       <p className="uppercase text-2xl">{moment.unix(time).format("HH:mm")}</p>
@@ -88,8 +87,8 @@ const SunItem = ({ time }: { time: number }) => (
 );
 
 const SunsetItem = ({ time }: { time: number }) => (
-  <div className="flex items-center space-x-2 px-4 py-3 border border-[#6F90CD] rounded-md bg-[#405885]">
-    <Moon className="h-10 w-10 text-gray-400" />
+  <div className="flex items-center space-x-2 px-4 py-3 border border-blue-200 rounded-md bg-white shadow-sm">
+    <Moon className="h-10 w-10 text-blue-500" />
     <div className="flex-1 flex justify-between items-center">
       <p className="font-extralight">Sunset</p>
       <p className="uppercase text-2xl">{moment.unix(time).format("HH:mm")}</p>
