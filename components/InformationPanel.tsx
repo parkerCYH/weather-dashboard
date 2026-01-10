@@ -1,10 +1,16 @@
 import React from "react";
-import LocationForm from "./form/location-form/LocationForm";
+import LocationSearchToggle from "./form/LocationSearchToggle";
 import Image from "next/image";
 import weatherCodeToString from "@/lib/weatherCodeToString";
 import { Moon, Sun } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type Props = {
   city: string;
@@ -15,16 +21,29 @@ type Props = {
 
 function InformationPanel({ city, lat, long, results }: Props) {
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-10 text-gray-900 border-r border-gray-200">
+    <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-10 text-gray-900 border-r border-gray-200 w-full md:w-96 flex-shrink-0">
       <div className="pb-5">
-        <h1 className="text-6xl font-bold">
-          <Link href="/">{decodeURI(city)}</Link>
-        </h1>
+        <TooltipProvider>
+          <Tooltip delayDuration={300}>
+            <TooltipTrigger asChild>
+              <h1 className="text-4xl font-bold line-clamp-2 min-h-[5rem] cursor-help">
+                <Link href="/">{decodeURI(city)}</Link>
+              </h1>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              className="max-w-xs bg-gray-900 text-white px-3 py-2 rounded-lg shadow-lg text-sm"
+              sideOffset={8}
+            >
+              <p>{decodeURI(city)}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <p className="text-xs text-gray-600">
           Long/Lat: {long}, {lat}
         </p>
       </div>
-      <LocationForm />
+      <LocationSearchToggle />
       <hr className="my-10" />
       <div className="mt-5 flex items-center justify-between space-x-10 mb-5">
         <div>

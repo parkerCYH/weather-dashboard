@@ -1,4 +1,4 @@
-import LocationForm from "@/components/form/location-form/LocationForm";
+import LocationSearchToggle from "@/components/form/LocationSearchToggle";
 import {
   Card,
   CardContent,
@@ -47,11 +47,7 @@ export default async function Home(props: Props) {
               <AlertDescription>{message}</AlertDescription>
             </Alert>
           )}
-          <Card className="bg-white shadow-md">
-            <CardContent className="pt-6">
-              <LocationForm />
-            </CardContent>
-          </Card>
+          <LocationSearchToggle />
         </CardContent>
       </Card>
     </main>

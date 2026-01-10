@@ -14,6 +14,8 @@ type Props = {
   searchParams: Promise<{
     country?: string;
     city?: string;
+    lat?: string;
+    lon?: string;
   }>;
 };
 
@@ -25,21 +27,32 @@ async function WeatherPage(props: Props) {
   }
 
   const searchParams = await props.searchParams;
-  const { country, city } = searchParams;
+  const { country, city, lat: latParam, lon: lonParam } = searchParams;
 
-  if (!country || !city) {
-    redirect("/?error=missing_location&message=Please select a country and city");
+  let lat: string;
+  let long: string;
+  let cityName: string;
+
+  // 支援兩種模式：1) country & city (原有模式) 2) lat & lon (搜尋模式)
+  if (latParam && lonParam) {
+    // 搜尋模式：直接使用 lat/lon
+    lat = latParam;
+    long = lonParam;
+    cityName = city || "Selected Location";
+  } else if (country && city) {
+    // 原有模式：使用 country & city 查詢座標
+    const coordinates = getCoordinates(country, city);
+
+    if (!coordinates) {
+      redirect("/?error=invalid_location&message=Could not find coordinates for selected location");
+    }
+
+    lat = coordinates.latitude.toString();
+    long = coordinates.longitude.toString();
+    cityName = coordinates.cityName;
+  } else {
+    redirect("/?error=missing_location&message=Please select a location");
   }
-
-  const coordinates = getCoordinates(country, city);
-
-  if (!coordinates) {
-    redirect("/?error=invalid_location&message=Could not find coordinates for selected location");
-  }
-
-  const lat = coordinates.latitude.toString();
-  const long = coordinates.longitude.toString();
-  const cityName = coordinates.cityName;
 
 
   const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/weather?latitude=${lat}&longitude=${long}`;
