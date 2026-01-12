@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import https from "https";
-import { URL } from "url";
 
 interface NominatimResult {
   osm_type: string;
@@ -24,64 +22,43 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 呼叫 Nominatim API
+    // 使用 CORS 代理访问 Nominatim API
     const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
       query
     )}&format=json&limit=5`;
 
-    console.log("Fetching from Nominatim:", nominatimUrl);
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(nominatimUrl)}`;
 
-    // 使用 Node.js 原生 https 模組
-    const response = await new Promise<NominatimResult[]>((resolve, reject) => {
-      const url = new URL(nominatimUrl);
-      const options = {
-        hostname: url.hostname,
-        path: url.pathname + url.search,
-        method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
-          "Host": url.hostname,  // 確保 Host header 正確
-        },
-        // 強制使用 IPv4，避免 IPv6 連線問題
-        family: 4,
-      };
+    console.log("Fetching from Nominatim via proxy:", proxyUrl);
 
-      const req = https.request(options, (res) => {
-        let data = "";
-
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-
-        res.on("end", () => {
-          try {
-            const parsed = JSON.parse(data);
-            resolve(parsed);
-          } catch (error) {
-            reject(new Error("Failed to parse response"));
-          }
-        });
-      });
-
-      req.on("error", (error) => {
-        reject(error);
-      });
-
-      req.setTimeout(30000);
-      req.on("timeout", () => {
-        req.destroy();
-        reject(new Error("Request timeout"));
-      });
-
-      req.end();
+    // 使用 fetch API
+    const response = await fetch(proxyUrl, {
+      method: "GET",
+      headers: {
+        "User-Agent": "WeatherDashboard/1.0",
+        "Accept": "application/json",
+        "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+      },
+      signal: AbortSignal.timeout(30000),
     });
 
-    console.log("Nominatim results count:", response.length);
+    if (!response.ok) {
+      console.error(`Proxy returned status ${response.status}`);
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await response.text();
+      console.error("Non-JSON response:", text.substring(0, 500));
+      throw new Error("Invalid content type: " + contentType);
+    }
+
+    const data: NominatimResult[] = await response.json();
+    console.log("Nominatim results count:", data.length);
 
     // 轉換為統一格式
-    const results = response.map((item: NominatimResult) => ({
+    const results = data.map((item: NominatimResult) => ({
       osmType: item.osm_type,
       osmId: item.osm_id.toString(),
       name: item.display_name,
