@@ -1,7 +1,7 @@
 "use client";
 
 import { useCities } from "@/lib/hooks/useLocation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { LocationFormData, LOCATION_FORM_FIELDS } from "./constants";
 import { FormField } from "@/components/ui/form";
@@ -31,12 +31,15 @@ function CitySelectFormItem() {
 
   const isDisabled = !countryCode || isLoading;
 
-  let tooltipMessage = null;
-  if (!countryCode) {
-    tooltipMessage = "請先選擇國家";
-  } else if (isLoading) {
-    tooltipMessage = "正在載入城市列表...";
-  }
+  const tooltipMessage = useMemo(() => {
+    if (!countryCode) {
+      return "請先選擇國家";
+    }
+    if (isLoading) {
+      return "正在載入城市列表...";
+    }
+    return null;
+  }, [countryCode, isLoading]);
 
   return (
     <FormField
