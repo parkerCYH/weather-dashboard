@@ -31,17 +31,12 @@ function CitySelectFormItem() {
 
   const isDisabled = !countryCode || isLoading;
 
-  const getTooltipMessage = () => {
-    if (!countryCode) {
-      return "請先選擇國家";
-    }
-    if (isLoading) {
-      return "正在載入城市列表...";
-    }
-    return null;
-  };
-
-  const tooltipMessage = getTooltipMessage();
+  let tooltipMessage = null;
+  if (!countryCode) {
+    tooltipMessage = "請先選擇國家";
+  } else if (isLoading) {
+    tooltipMessage = "正在載入城市列表...";
+  }
 
   return (
     <FormField
