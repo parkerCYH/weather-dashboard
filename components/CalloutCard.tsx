@@ -1,7 +1,6 @@
 "use client";
 
-import { CheckCircle, AlertCircle, Loader2 } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -44,18 +43,24 @@ function CalloutCard({ weatherData }: Props) {
     fetchSuggestion();
   }, [weatherData]);
 
-  const Icon = loading ? Loader2 : warning ? AlertCircle : CheckCircle;
+  const bgColor = warning ? "bg-yellow-50" : "bg-blue-50";
+  const borderColor = warning ? "border-yellow-200" : "border-blue-200";
+  const iconBgColor = warning ? "bg-yellow-600" : "bg-blue-600";
+  const textColor = warning ? "text-yellow-900" : "text-blue-900";
 
   return (
-    <Alert variant={warning ? "destructive" : "default"} className="mt-4">
-      <Icon className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-      <AlertTitle>
-        {loading ? "Loading..." : warning ? "Warning" : "Info"}
-      </AlertTitle>
-      <AlertDescription>
+    <div className={`flex gap-2 p-3 border rounded-lg ${bgColor} ${borderColor}`}>
+      <div className={`size-5 rounded-full text-white flex items-center justify-center shrink-0 mt-0.5 ${iconBgColor}`}>
+        {loading ? (
+          <Loader2 className="size-3 animate-spin" />
+        ) : (
+          <span className="text-xs">i</span>
+        )}
+      </div>
+      <p className={`text-sm ${textColor}`}>
         {loading ? "Generating weather suggestion..." : message}
-      </AlertDescription>
-    </Alert>
+      </p>
+    </div>
   );
 }
 
