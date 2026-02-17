@@ -12,53 +12,39 @@ interface NominatimResult {
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const query = searchParams.get("q");
+    const { searchParams } = new URL(request.url);
+    const query = searchParams.get("q")?.trim();
 
-    if (!query) {
+    if (!query || query.length < 2) {
       return NextResponse.json(
-        { error: "Query parameter 'q' is required" },
+        { error: "Query parameter 'q' is too short or missing" },
         { status: 400 }
       );
     }
 
-    // 使用 CORS 代理访问 Nominatim API
-    const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-      query
-    )}&format=json&limit=5`;
 
-    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(nominatimUrl)}`;
+    const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5`;
 
-    console.log("Fetching from Nominatim via proxy:", proxyUrl);
-
-    // 使用 fetch API
-    const response = await fetch(proxyUrl, {
+    const response = await fetch(nominatimUrl, {
       method: "GET",
       headers: {
-        "User-Agent": "WeatherDashboard/1.0",
+        "User-Agent": "Weather Dashboard/1.0 (fbi0258zzz@gmail.com)",
         "Accept": "application/json",
-        "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
       },
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(10000),
+      next: { revalidate: 3600 }
     });
 
     if (!response.ok) {
-      console.error(`Proxy returned status ${response.status}`);
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-      const text = await response.text();
-      console.error("Non-JSON response:", text.substring(0, 500));
-      throw new Error("Invalid content type: " + contentType);
+      return NextResponse.json(
+        { error: `Nominatim API returned ${response.status}` },
+        { status: response.status }
+      );
     }
 
     const data: NominatimResult[] = await response.json();
-    console.log("Nominatim results count:", data.length);
 
-    // 轉換為統一格式
-    const results = data.map((item: NominatimResult) => ({
+    const results = data.map((item) => ({
       osmType: item.osm_type,
       osmId: item.osm_id.toString(),
       name: item.display_name,
@@ -73,11 +59,16 @@ export async function GET(request: NextRequest) {
       source: "nominatim",
       results,
     });
-  } catch (error) {
-    console.error("Error fetching from Nominatim:", error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+  } catch (error: any) {
+    console.error("Nominatim API Error:", error);
+
+    if (error.name === 'TimeoutError') {
+      return NextResponse.json({ error: "Request timeout" }, { status: 504 });
+    }
+
     return NextResponse.json(
-      { error: "Failed to fetch from Nominatim", details: errorMessage },
+      { error: "Internal Server Error", details: error.message },
       { status: 500 }
     );
   }
