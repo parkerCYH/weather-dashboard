@@ -13,9 +13,8 @@ import { usePlaceSearch, useNominatimSearch, useSavePlace } from "@/lib/hooks/us
 export default function SearchInput() {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const debouncedQuery = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(query, 700);
 
-  // 使用 React Query hooks
   const { data: dbData, isLoading: isSearchingDB } = usePlaceSearch(debouncedQuery);
   const {
     data: nominatimData,
@@ -32,24 +31,24 @@ export default function SearchInput() {
     dbResults.length === 0 &&
     nominatimResults.length === 0;
 
-  // 查詢更多（Nominatim）
+
   const handleFetchMore = () => {
     fetchNominatim();
   };
 
-  // 選擇地點
+
   const handleSelectPlace = async (place: PlaceResult) => {
-    // 如果是從 Nominatim 來的結果，先存入資料庫
+
     if (place.source === "Nominatim") {
       try {
         await savePlaceMutation.mutateAsync(place);
       } catch (error) {
         console.error("Error saving place:", error);
-        // 即使儲存失敗也繼續導航
+
       }
     }
 
-    // 導航到天氣頁面
+
     router.push(
       `/weather-dashboard?lat=${place.lat}&lon=${place.lon}&city=${encodeURIComponent(
         place.name
@@ -65,7 +64,7 @@ export default function SearchInput() {
         <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
         <Input
           type="text"
-          placeholder="搜尋地點..."
+          placeholder="Search a place..."
           value={query}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
           className="pl-9"
@@ -119,12 +118,12 @@ export default function SearchInput() {
           {isFetchingMore ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              載入中...
+              Loading...
             </>
           ) : (
             <>
               <Search className="mr-2 h-4 w-4" />
-              查詢更多結果
+              Load more results
             </>
           )}
         </Button>
@@ -135,7 +134,7 @@ export default function SearchInput() {
         allResults.length === 0 &&
         !showNominatimButton && (
           <p className="text-center text-sm text-gray-500 py-4">
-            沒有找到結果
+            No results found
           </p>
         )}
     </div>

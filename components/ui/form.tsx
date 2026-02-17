@@ -11,8 +11,6 @@ import {
   FormProvider,
   useFormContext,
 } from "react-hook-form";
-import { Globe } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
@@ -82,7 +80,6 @@ const FormField = <
           render={() => (
             <FormItem>
               <FormLabel className="flex items-center space-x-2 text-gray-900">
-                <Globe className="h-5 w-5 text-blue-600" />
                 <span>{label}</span>
               </FormLabel>
               <FormControl>{children}</FormControl>

@@ -28,8 +28,8 @@ export default async function Home(props: Props) {
   const searchParams = await props.searchParams;
   const { error, message } = searchParams;
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-10 flex flex-col justify-center items-center">
-      <Card className="w-full max-w-4xl">
+    <main className="min-h-[calc(100vh-var(--header-height))]  p-10 flex flex-col justify-center items-center">
+      <Card className="w-full max-w-4xl mt-16">
         <CardHeader className="text-center">
           <CardTitle className="text-6xl font-bold mb-4">
             Weather Dashboard
