@@ -17,26 +17,26 @@ export function generateWeatherSuggestionPrompt(
       .slice(0, 24)
       .reduce((a, b) => a + b, 0) / 24;
 
-  return `根據以下天氣資料，請用繁體中文提供實用且簡潔的建議或警告：
+  return `Based on the following weather data, please provide practical and concise suggestions or warnings in English:
 
-目前天氣：
-- 溫度：${weatherData.current_weather.temperature}°C
-- 天氣代碼：${weatherData.current_weather.weathercode}
-- 風速：${weatherData.current_weather.windspeed} m/s
-- 風向：${weatherData.current_weather.winddirection}°
+Current Weather:
+- Temperature: ${weatherData.current_weather.temperature}°C
+- Weather Code: ${weatherData.current_weather.weathercode}
+- Wind Speed: ${weatherData.current_weather.windspeed} m/s
+- Wind Direction: ${weatherData.current_weather.winddirection}°
 
-今日預報：
-- 最高溫度：${weatherData.daily.temperature_2m_max[0]}°C
-- 最低溫度：${weatherData.daily.temperature_2m_min[0]}°C
-- 紫外線指數：${weatherData.daily.uv_index_max[0]}
-- 天氣代碼：${weatherData.daily.weathercode[0]}
+Today's Forecast:
+- Max Temperature: ${weatherData.daily.temperature_2m_max[0]}°C
+- Min Temperature: ${weatherData.daily.temperature_2m_min[0]}°C
+- UV Index: ${weatherData.daily.uv_index_max[0]}
+- Weather Code: ${weatherData.daily.weathercode[0]}
 
-未來 24 小時數據：
-- 平均濕度：${avgHumidity}%
-- 總降雨量：${totalPrecipitation} mm
-- 降雨機率：${avgPrecipitationProbability}%
+Next 24 Hours Data:
+- Average Humidity: ${avgHumidity}%
+- Total Precipitation: ${totalPrecipitation} mm
+- Precipitation Probability: ${avgPrecipitationProbability}%
 
-請用繁體中文提供實用的建議，告訴使用者今天應該準備或注意什麼。保持友善且字數在 150 字以內。`;
+Please provide practical suggestions in English, telling users what they should prepare or pay attention to today. Keep it friendly and under 150 words.`;
 }
 export function shouldShowWarning(weatherData: WeatherData): boolean {
   const uvIndex = weatherData.daily.uv_index_max[0];
