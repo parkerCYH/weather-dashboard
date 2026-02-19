@@ -19,7 +19,7 @@ export const WeatherCard = ({ results }: Props) => {
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Calendar className="size-4" />
                             <span>
-                                {new Date().toLocaleDateString("zh-TW", {
+                                {new Date().toLocaleDateString(undefined, {
                                     weekday: "long",
                                     year: "numeric",
                                     month: "long",
@@ -30,7 +30,7 @@ export const WeatherCard = ({ results }: Props) => {
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Clock className="size-4" />
                             <span>
-                                {new Date().toLocaleTimeString("zh-TW", {
+                                {new Date().toLocaleTimeString(undefined, {
                                     hour: "numeric",
                                     minute: "numeric",
                                     hour12: false,
@@ -68,7 +68,7 @@ export const WeatherCard = ({ results }: Props) => {
                                 <Sun className="size-5 text-amber-600" />
                             </div>
                             <div>
-                                <p className="text-xs text-muted-foreground text-gray-500">日出</p>
+                                <p className="text-xs text-muted-foreground text-gray-500">Sunrise</p>
                                 <p className="text-sm">
                                     {moment.unix(results.daily.sunrise?.[0]).format("HH:mm")}
                                 </p>
@@ -79,7 +79,7 @@ export const WeatherCard = ({ results }: Props) => {
                                 <Moon className="size-5 text-indigo-600" />
                             </div>
                             <div>
-                                <p className="text-xs text-muted-foreground text-gray-500">日落</p>
+                                <p className="text-xs text-muted-foreground text-gray-500">Sunset</p>
                                 <p className="text-sm">
                                     {moment.unix(results.daily.sunset?.[0]).format("HH:mm")}
                                 </p>

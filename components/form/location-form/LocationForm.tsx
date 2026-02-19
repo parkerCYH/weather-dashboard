@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useGetCoordinates } from "@/lib/hooks/useLocation";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Loader2, AlertCircle } from "lucide-react";
 import { useEffect } from "react";
@@ -11,16 +10,18 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import CitySelectFormItem from "./CitySelectFormItem";
 import CountrySelectFormItem from "./CountrySelectFormItem";
 import { LocationFormData } from "./constants";
+import { useRouter } from "next/navigation";
+import { useWeatherParams } from "@/lib/hooks/useWeatherParams";
 
 function LocationForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [{ country, city, mode }] = useWeatherParams();
 
   const form = useForm<LocationFormData>({
     mode: "onChange",
     defaultValues: {
-      countryCode: searchParams.get("country") || "",
-      cityCode: searchParams.get("city") || "",
+      countryCode: country,
+      cityCode: city,
     },
   });
 
@@ -29,10 +30,10 @@ function LocationForm() {
   useEffect(() => {
     if (mutation.isSuccess && mutation.variables) {
       router.push(
-        `/weather-dashboard?country=${mutation.variables.countryCode}&city=${mutation.variables.cityCode}` 
+        `/weather-dashboard?country=${mutation.variables.countryCode}&city=${mutation.variables.cityCode}&mode=${mode}`
       );
     }
-  }, [mutation.isSuccess, mutation.variables, router]);
+  }, [mutation.isSuccess, mutation.variables, mode, router]);
 
   const onSubmit = async (data: LocationFormData) => {
     if (!data.countryCode || !data.cityCode) return;
@@ -49,7 +50,7 @@ function LocationForm() {
           </AlertDescription>
         </Alert>
       )}
-      
+
       <CountrySelectFormItem />
 
       <CitySelectFormItem />
