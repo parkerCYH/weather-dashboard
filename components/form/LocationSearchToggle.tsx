@@ -6,7 +6,7 @@ import SearchInput from "./SearchInput";
 import { List, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { SEARCH_MODE_KEYS, SearchMode } from "./constants";
+import { SearchMode } from "./constants";
 import { useWeatherParams } from "@/lib/hooks/useWeatherParams";
 
 export default function LocationSearchToggle() {

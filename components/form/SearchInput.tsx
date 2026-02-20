@@ -1,16 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Search, MapPin } from "lucide-react";
-import { PlaceResult } from "@/lib/types/place";
+import { Input } from "@/components/ui/input";
 import useDebounce from "@/lib/hooks/useDebounce";
-import { usePlaceSearch, useNominatimSearch, useSavePlace } from "@/lib/hooks/usePlaces";
-import { SEARCH_MODE_KEYS } from "./constants";
-import { useRouter } from "next/navigation";
+import { useNominatimSearch, usePlaceSearch, useSavePlace } from "@/lib/hooks/usePlaces";
 import { useWeatherParams } from "@/lib/hooks/useWeatherParams";
+import { PlaceResult } from "@/lib/types/place";
+import { Loader2, MapPin, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function SearchInput() {
   const router = useRouter();

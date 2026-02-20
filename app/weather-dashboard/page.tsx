@@ -1,14 +1,13 @@
-import CalloutCard from "@/components/CalloutCard";
-import HumidityChart from "@/components/HumidityChart";
-import RainChart from "@/components/RainChart";
-import StatCard from "@/components/StatCard";
-import TempChart from "@/components/TempChart";
-import { TodayOverviewCard } from "./_card/TodayOverviewCard";
+import HumidityChart from "@/app/weather-dashboard/_charts/HumidityChart";
+import RainChart from "@/app/weather-dashboard/_charts/RainChart";
+import StatCard from "@/app/weather-dashboard/_charts/StatCard";
+import TempChart from "@/app/weather-dashboard/_charts/TempChart";
+import { TodayOverviewCard } from "./_cards/TodayOverviewCard";
 import { getCoordinates } from "@/lib/mockCoordinates";
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "@/lib/getServerAuthSession";
-import { PlaceCard } from "./_card/PlaceCard";
-import { WeatherCard } from "./_card/WeatherCard";
+import { PlaceCard } from "./_cards/PlaceCard";
+import { WeatherCard } from "./_cards/WeatherCard";
 
 export const revalidate = 60;
 

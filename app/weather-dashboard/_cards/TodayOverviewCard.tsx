@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import CalloutCard from "@/components/CalloutCard";
+import CalloutCard from "@/app/weather-dashboard/_cards/CalloutCard";
 
 type Props = {
     weatherData: Root;
