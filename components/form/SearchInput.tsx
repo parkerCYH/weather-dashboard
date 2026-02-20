@@ -4,16 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/lib/hooks/useDebounce";
-import { useNominatimSearch, usePlaceSearch, useSavePlace } from "@/lib/hooks/usePlaces";
-import { useWeatherParams } from "@/lib/hooks/useWeatherParams";
-import { PlaceResult } from "@/lib/types/place";
-import { Loader2, MapPin, Search } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useNominatimSearch, usePlaceSearch } from "@/lib/hooks/usePlaces";
+import { Loader2, Search } from "lucide-react";
 import { useState } from "react";
+import PlaceSearchItem from "./PlaceSearchItem";
 
 export default function SearchInput() {
-  const router = useRouter();
-  const [{ mode }] = useWeatherParams();
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 700);
 
@@ -23,7 +19,6 @@ export default function SearchInput() {
     refetch: fetchNominatim,
     isFetching: isFetchingMore,
   } = useNominatimSearch(debouncedQuery);
-  const savePlaceMutation = useSavePlace();
 
   const dbResults = dbData?.results || [];
   const nominatimResults = nominatimData?.results || [];
@@ -36,25 +31,6 @@ export default function SearchInput() {
 
   const handleFetchMore = () => {
     fetchNominatim();
-  };
-
-
-  const handleSelectPlace = async (place: PlaceResult) => {
-
-    if (place.source === "Nominatim") {
-      try {
-        await savePlaceMutation.mutateAsync(place);
-      } catch (error) {
-        console.error("Error saving place:", error);
-
-      }
-    }
-
-    router.push(
-      `/weather-dashboard?lat=${place.lat}&lon=${place.lon}&city=${encodeURIComponent(
-        place.name
-      )}&mode=${mode}`
-    );
   };
 
   const allResults = [...dbResults, ...nominatimResults];
@@ -79,30 +55,16 @@ export default function SearchInput() {
       )}
 
       {allResults.length > 0 && (
-        <Card>
-          <CardContent className="p-0">
+        <Card className="border-0 shadow-none">
+          <CardContent className="p-0 overflow-hidden relative border rounded-xl">
             <div className="max-h-64 overflow-y-auto">
               {allResults.map((place, index) => (
-                <button
+                <PlaceSearchItem
                   key={`${place.osmType}-${place.osmId}-${index}`}
-                  onClick={() => handleSelectPlace(place)}
-                  className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b last:border-b-0 transition-colors"
-                >
-                  <div className="flex items-start gap-2">
-                    <MapPin className="h-4 w-4 mt-1 text-gray-400 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">
-                        {place.name}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {place.type} • {place.source}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {place.lat.toFixed(4)}, {place.lon.toFixed(4)}
-                      </p>
-                    </div>
-                  </div>
-                </button>
+                  place={place}
+                  isFirst={index === 0}
+                  isLast={index === allResults.length - 1}
+                />
               ))}
             </div>
           </CardContent>
