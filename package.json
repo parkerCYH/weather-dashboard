@@ -10,8 +10,10 @@
         "lint": "eslint",
         "postinstall": "prisma generate",
         "vercel-build": "prisma generate && prisma migrate deploy && next build",
-        "test": "jest",
-        "test:watch": "jest --watch",
+        "test:unit": "vitest run",
+        "test:unit:watch": "vitest",
+        "test:unit:coverage": "vitest run --coverage",
+        "test:e2e:homepage": "playwright test tests/e2e/homepage.spec.ts --reporter=list --workers=1",
         "prisma:seed": "tsx scripts/seed.ts"
     },
     "dependencies": {
@@ -61,22 +63,23 @@
         "zod": "^4.3.6"
     },
     "devDependencies": {
+        "@playwright/test": "^1.58.2",
         "@tanstack/eslint-plugin-query": "^5.91.4",
         "@testing-library/dom": "^10.4.1",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.2",
         "@types/better-sqlite3": "^7.6.13",
-        "@types/jest": "^30.0.0",
         "@types/node": "^24.10.13",
+        "@vitejs/plugin-react": "^6.0.1",
+        "@vitest/coverage-v8": "^4.1.0",
         "eslint": "^9.39.2",
         "eslint-config-next": "^16.1.6",
         "eslint-config-prettier": "^10.1.8",
-        "jest": "^30.2.0",
-        "jest-environment-jsdom": "^30.2.0",
+        "jsdom": "^29.0.0",
         "prettier": "^3.8.1",
         "prisma": "^7.4.0",
-        "ts-node": "^10.9.2",
-        "vercel": "^50.32.5"
+        "vercel": "^50.32.5",
+        "vitest": "^4.1.0"
     },
     "prisma": {
         "seed": "tsx prisma/seed.ts"

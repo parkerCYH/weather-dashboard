@@ -89,6 +89,8 @@ Follow the steps in the dev plan exactly. Key conventions for this project:
 - **Middleware**: `proxy.ts` (not `middleware.ts` — Next.js 16 rename)
 - **API routes**: Stay at `app/api/` outside `[locale]/` to avoid locale prefix
 - **Type safety**: `typedRoutes: true` is enabled
+- **Unit tests**: Vitest + `@testing-library/react` — config in `vitest.config.ts`, run with `pnpm test:unit`
+- **E2E tests**: Playwright — config in `playwright.config.ts`, scripts per feature (never run all at once)
 
 ### i18n Checklist
 - [ ] Add all new message keys to `messages/zh-TW.json`, `messages/en.json`, `messages/ja.json`
@@ -119,13 +121,15 @@ Follow the steps in the dev plan exactly. Key conventions for this project:
 Run the following **in order**. All three must pass before the task is considered done.
 
 ```bash
-pnpm tsc        # No TypeScript errors
-pnpm lint       # No ESLint errors
-pnpm test:e2e:<feature-slug>   # All E2E tests pass
+pnpm tsc                          # No TypeScript errors
+pnpm lint                         # No ESLint errors
+pnpm test:unit                    # All unit tests pass (if applicable)
+pnpm test:e2e:<feature-slug>      # All E2E tests pass
 ```
 
 - [ ] `pnpm tsc` — exits with code 0
 - [ ] `pnpm lint` — exits with code 0
+- [ ] `pnpm test:unit` — exits with code 0 (skip if no unit tests for this feature)
 - [ ] `pnpm test:e2e:<feature-slug>` — all test cases pass
 
 If any step fails, fix it before finishing. Do not skip or suppress errors.
