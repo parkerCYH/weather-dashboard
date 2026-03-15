@@ -1,6 +1,7 @@
 import { AuthShowcase } from "@/components/AuthShowcase";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import Link from "next/link";
 
 type Props = {
   searchParams: Promise<{
@@ -27,7 +28,15 @@ export default async function LoginPage(props: Props) {
             <AlertDescription>{message}</AlertDescription>
           </Alert>
         )}
-        <AuthShowcase />
+        <div className="flex flex-col items-center gap-4">
+          <AuthShowcase />
+          <Link
+            href="/"
+            className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            Continue as Guest →
+          </Link>
+        </div>
       </div>
     </main>
   );

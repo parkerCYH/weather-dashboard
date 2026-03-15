@@ -7,9 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getServerAuthSession } from "@/lib/getServerAuthSession";
-import { redirect } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 
 type Props = {
@@ -21,10 +20,6 @@ type Props = {
 
 export default async function Home(props: Props) {
   const session = await getServerAuthSession();
-
-  if (!session) {
-    redirect("/login");
-  }
   const searchParams = await props.searchParams;
   const { error, message } = searchParams;
   return (
@@ -40,10 +35,21 @@ export default async function Home(props: Props) {
         </CardHeader>
         <Separator className="my-6" />
         <CardContent>
+          {!session && (
+            <Alert className="mb-6">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                You are browsing as a guest.{" "}
+                <a href="/login" className="font-semibold underline underline-offset-2">
+                  Sign in
+                </a>{" "}
+                to save your favourite locations.
+              </AlertDescription>
+            </Alert>
+          )}
           {error && message && (
             <Alert variant="destructive" className="mb-6">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
               <AlertDescription>{message}</AlertDescription>
             </Alert>
           )}

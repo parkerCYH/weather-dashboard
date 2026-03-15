@@ -14,6 +14,7 @@
         "test:unit:watch": "vitest",
         "test:unit:coverage": "vitest run --coverage",
         "test:e2e:homepage": "playwright test tests/e2e/homepage.spec.ts --reporter=list --workers=1",
+        "test:e2e:guest-rate-limit": "playwright test tests/e2e/guest-and-rate-limit.spec.ts --reporter=list --workers=1",
         "prisma:seed": "tsx scripts/seed.ts"
     },
     "dependencies": {
@@ -37,6 +38,7 @@
         "@types/ramda": "^0.31.1",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
+        "@upstash/ratelimit": "^2.0.8",
         "@upstash/redis": "^1.36.2",
         "axios": "^1.13.5",
         "class-variance-authority": "^0.7.1",

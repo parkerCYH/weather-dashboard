@@ -23,10 +23,6 @@ type Props = {
 async function WeatherPage(props: Props) {
   const session = await getServerAuthSession();
 
-  if (!session) {
-    redirect("/login?error=unauthorized&message=Please sign in to view weather dashboard");
-  }
-
   const searchParams = await props.searchParams;
   const { country, city, lat: latParam, lon: lonParam } = searchParams;
 
@@ -71,7 +67,7 @@ async function WeatherPage(props: Props) {
   return (
     <div className="flex flex-col min-h-screen md:flex-row">
       <div className="p-5 lg:p-10 text-gray-900 w-full md:w-96 shrink-0 space-y-4">
-        <PlaceCard city={cityName} lat={lat} long={long} />
+        <PlaceCard city={cityName} lat={lat} long={long} isGuest={!session} />
         <WeatherCard results={results} />
       </div>
       <div className="flex-1 p-5 lg:p-10 space-y-4">
