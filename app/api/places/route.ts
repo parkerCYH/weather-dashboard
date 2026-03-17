@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       where: {
         unique_osm: {
           osmType,
-          osmId: BigInt(osmId),
+          osmId,
         },
       },
     });
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         place: {
           id: existing.id.toString(),
           osmType: existing.osmType,
-          osmId: existing.osmId.toString(),
+          osmId: existing.osmId,
           name: existing.name,
           class: existing.class,
           type: existing.type,
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     const place = await prisma.place.create({
       data: {
         osmType,
-        osmId: BigInt(osmId),
+        osmId,
         name,
         class: placeClass,
         type,
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       place: {
         id: place.id.toString(),
         osmType: place.osmType,
-        osmId: place.osmId.toString(),
+        osmId: place.osmId,
         name: place.name,
         class: place.class,
         type: place.type,

@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(50, "1 h"),
+  limiter: Ratelimit.slidingWindow(500, "1 h"),
   prefix: "weather:ratelimit",
 });
 

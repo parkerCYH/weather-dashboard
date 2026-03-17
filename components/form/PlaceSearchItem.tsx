@@ -1,11 +1,12 @@
 "use client";
 
 import { PlaceResult } from "@/lib/types/place";
-import { Loader2, MapPin } from "lucide-react";
+import { Loader2, MapPin, Star } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useWeatherParams } from "@/lib/hooks/useWeatherParams";
 import { useSavePlace } from "@/lib/hooks/usePlaces";
+import { useIsFavorite, useAddFavorite, useRemoveFavorite, useIsAtFavoritesLimit } from "@/lib/hooks/useFavorites";
 import {
     Tooltip,
     TooltipContent,
@@ -29,6 +30,11 @@ export default function PlaceSearchItem({
     const savePlaceMutation = useSavePlace();
     const [isLoading, setIsLoading] = useState(false);
 
+    const isFav = useIsFavorite(place);
+    const isAtLimit = useIsAtFavoritesLimit();
+    const { addFavorite } = useAddFavorite();
+    const { removeFavorite } = useRemoveFavorite();
+
     const handleClick = async () => {
         setIsLoading(true);
         try {
@@ -47,6 +53,17 @@ export default function PlaceSearchItem({
             setIsLoading(false);
         }
     };
+
+    const handleStarClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (isFav) {
+            removeFavorite(place.osmType, String(place.osmId));
+        } else {
+            addFavorite(place);
+        }
+    };
+
+    const starDisabled = !isFav && isAtLimit;
 
     return (
         <button
@@ -81,6 +98,34 @@ export default function PlaceSearchItem({
                     </p>
                 </div>
 
+                {/* Star favourite button */}
+                <TooltipProvider>
+                    <Tooltip delayDuration={100}>
+                        <TooltipTrigger asChild>
+                            <span>
+                                <button
+                                    onClick={handleStarClick}
+                                    disabled={starDisabled}
+                                    aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
+                                    className={`p-1 rounded transition-colors shrink-0 disabled:opacity-40 disabled:cursor-not-allowed ${isFav
+                                        ? "text-yellow-400 hover:text-yellow-500"
+                                        : "text-gray-300 hover:text-yellow-400"
+                                        }`}
+                                >
+                                    <Star
+                                        className="h-4 w-4"
+                                        fill={isFav ? "currentColor" : "none"}
+                                    />
+                                </button>
+                            </span>
+                        </TooltipTrigger>
+                        {starDisabled && (
+                            <TooltipContent className="max-w-xs bg-gray-900 text-white px-3 py-2 rounded-lg shadow-lg text-sm">
+                                <p>Favorites limit reached</p>
+                            </TooltipContent>
+                        )}
+                    </Tooltip>
+                </TooltipProvider>
             </div>
         </button>
     );

@@ -15,6 +15,8 @@
         "test:unit:coverage": "vitest run --coverage",
         "test:e2e:homepage": "playwright test tests/e2e/homepage.spec.ts --reporter=list --workers=1",
         "test:e2e:guest-rate-limit": "playwright test tests/e2e/guest-and-rate-limit.spec.ts --reporter=list --workers=1",
+        "test:unit:favorites": "vitest run tests/unit/api/favorites.test.ts",
+        "test:e2e:favorites": "playwright test tests/e2e/favorites.spec.ts --reporter=list --workers=1",
         "prisma:seed": "tsx scripts/seed.ts"
     },
     "dependencies": {
@@ -62,7 +64,8 @@
         "tailwindcss-animate": "^1.0.7",
         "tsx": "^4.21.0",
         "typescript": "^5.9.3",
-        "zod": "^4.3.6"
+        "zod": "^4.3.6",
+        "zustand": "^5.0.12"
     },
     "devDependencies": {
         "@playwright/test": "^1.58.2",

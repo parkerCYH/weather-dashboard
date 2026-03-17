@@ -1,4 +1,5 @@
 import LocationSearchToggle from "@/components/form/LocationSearchToggle";
+import FavoritesList from "@/components/favorites/FavoritesList";
 import {
   Card,
   CardContent,
@@ -56,6 +57,7 @@ export default async function Home(props: Props) {
           <LocationSearchToggle />
         </CardContent>
       </Card>
+      <FavoritesList isLoggedIn={!!session} />
     </main>
   );
 }

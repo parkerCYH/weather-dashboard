@@ -90,6 +90,7 @@ Follow the steps in the dev plan exactly. Key conventions for this project:
 - **API routes**: Stay at `app/api/` outside `[locale]/` to avoid locale prefix
 - **Type safety**: `typedRoutes: true` is enabled
 - **Unit tests**: Vitest + `@testing-library/react` — config in `vitest.config.ts`, run with `pnpm test:unit`
+- **API unit tests**: Every new `app/api/` route **must** have a corresponding Vitest unit test at `tests/unit/api/<route-name>.test.ts`; use `vi.mock()` to mock all external deps (redis, prisma, auth) — never hit real services
 - **E2E tests**: Playwright — config in `playwright.config.ts`, scripts per feature (never run all at once)
 
 ### i18n Checklist
@@ -98,15 +99,29 @@ Follow the steps in the dev plan exactly. Key conventions for this project:
 
 ---
 
-## Step 4 — Add E2E Test
+## Step 4 — Add Tests
+
+### 4a — Vitest Unit Tests (required for every new API route)
+
+1. Create `tests/unit/api/<route-name>.test.ts`
+2. Use `vi.mock()` to mock all external deps (`redis`, `prisma`, `getServerAuthSession`, etc.) — never hit real databases or external services
+3. Call the exported handler functions directly (no HTTP server needed)
+4. Cover: auth guard (401 when unauthenticated), happy path, validation errors (400), business rule guards (409), and edge cases
+5. Add a focused script to `package.json`:
+   ```json
+   "test:unit:<route-name>": "vitest run tests/unit/api/<route-name>.test.ts"
+   ```
+
+### 4b — Playwright E2E Tests
 
 1. Create the test file at `tests/e2e/<feature-slug>.spec.ts`
 2. Write test cases matching the plan (use Traditional Chinese for `test.describe` / `test` labels, matching the style in existing tests)
-3. Add the individual script to `package.json`:
+3. Use `page.route()` to mock API calls that depend on auth (GitHub OAuth) or external services — never require a real logged-in session
+4. Add the individual script to `package.json`:
    ```json
    "test:e2e:<feature-slug>": "playwright test tests/e2e/<feature-slug>.spec.ts --reporter=list --workers=1"
    ```
-4. **Do NOT add a script that runs all E2E tests at once.** Each feature gets its own script only.
+5. **Do NOT add a script that runs all E2E tests at once.** Each feature gets its own script only.
 
 ### Existing Test Script Pattern (reference)
 ```json
@@ -118,18 +133,20 @@ Follow the steps in the dev plan exactly. Key conventions for this project:
 
 ## Step 5 — Verify
 
-Run the following **in order**. All three must pass before the task is considered done.
+Run the following **in order**. All must pass before the task is considered done.
 
 ```bash
-pnpm tsc                          # No TypeScript errors
-pnpm lint                         # No ESLint errors
-pnpm test:unit                    # All unit tests pass (if applicable)
-pnpm test:e2e:<feature-slug>      # All E2E tests pass
+pnpm tsc                             # No TypeScript errors
+pnpm lint                            # No ESLint errors
+pnpm test:unit:<route-name>          # API unit tests pass (required if new API routes added)
+pnpm test:unit                       # All unit tests pass
+pnpm test:e2e:<feature-slug>         # All E2E tests pass
 ```
 
 - [ ] `pnpm tsc` — exits with code 0
 - [ ] `pnpm lint` — exits with code 0
-- [ ] `pnpm test:unit` — exits with code 0 (skip if no unit tests for this feature)
+- [ ] `pnpm test:unit:<route-name>` — exits with code 0 (required when new API routes are added)
+- [ ] `pnpm test:unit` — exits with code 0
 - [ ] `pnpm test:e2e:<feature-slug>` — all test cases pass
 
 If any step fails, fix it before finishing. Do not skip or suppress errors.
@@ -141,3 +158,6 @@ If any step fails, fix it before finishing. Do not skip or suppress errors.
 - Adding a `test:e2e` or `test:e2e:all` script that runs multiple spec files
 - Skipping i18n keys for any hardcoded visible text
 - Creating API routes under `app/[locale]/api/` (must stay at `app/api/`)
+- Skipping API unit tests when adding a new route (`tests/unit/api/` test is mandatory)
+- Writing unit tests that call `fetch()` or start a real HTTP server — call handler functions directly
+- Hitting real Redis/Postgres/external APIs in unit tests — always `vi.mock()` them

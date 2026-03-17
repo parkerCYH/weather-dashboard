@@ -67,13 +67,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  favorites     UserFavorite[]
 
   @@map("users")
 }
@@ -89,18 +90,32 @@ model VerificationToken {
 }
 
 model Place {
-  id      BigInt @id @default(autoincrement())
-  osmType String
-  osmId   BigInt
-  name    String
-  class   String
-  type    String
-  lat     Float
-  lon     Float
-  source  String
+  id        BigInt         @id @default(autoincrement())
+  osmType   String
+  osmId     String
+  name      String
+  class     String
+  type      String
+  lat       Float
+  lon       Float
+  source    String
+  favorites UserFavorite[]
 
   @@unique([osmType, osmId], name: "unique_osm")
   @@index([osmType, osmId], name: "idx_osm")
   @@index([name], name: "idx_name")
   @@map("places")
+}
+
+model UserFavorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  placeId   BigInt
+  place     Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, placeId])
+  @@index([userId])
+  @@map("user_favorites")
 }
